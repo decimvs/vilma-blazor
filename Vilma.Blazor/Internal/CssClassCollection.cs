@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vilma.Blazor
+namespace Vilma.Blazor.Internal
 {
     /// <summary>
     /// Custom list created to hold and manipulate css classes.
     /// </summary>
-    public class CssClassCollection : HashSet<string>
+    internal class CssClassCollection : HashSet<string>
     {
         /// <summary>
         /// Default constructor
@@ -37,7 +37,7 @@ namespace Vilma.Blazor
         /// <param name="cssClass"></param>
         public new void Add(string cssClass)
         {
-            if (!Contains(cssClass)) 
+            if (!Contains(cssClass))
             {
                 base.Add(cssClass);
             }
@@ -56,7 +56,7 @@ namespace Vilma.Blazor
 
                 foreach (var token in tokens)
                 {
-                    this.Add(token);
+                    Add(token);
                 }
             }
         }

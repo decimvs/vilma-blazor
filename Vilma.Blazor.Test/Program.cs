@@ -1,7 +1,11 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Vilma.Blazor;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddVilmaBlazorServices();
+
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 

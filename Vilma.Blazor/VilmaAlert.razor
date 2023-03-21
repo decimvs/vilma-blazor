@@ -1,12 +1,7 @@
 ﻿@inject IJSRuntime _jsRuntime
 @inherits VilmaBasicComponent
 
-<div @attributes="_alertAttributes" @ref="_alertReference">
-    @if (ShowCloseButton)
-    {
-        <a class="uk-alert-close" uk-close></a>
-    }
-
+<div class="@_alertCss" role="alert" aria-live="assertive" aria-atomic="true" @ref="@_alertReference">
     @if (string.IsNullOrWhiteSpace(Content))
     {
         @BodyTemplate
@@ -15,11 +10,16 @@
     {
         @Content
     }
+
+    @if (ShowCloseButton)
+    {
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @onclick="@(() => AlertClosed.InvokeAsync(this))"></button>
+    }
 </div>
 
 @code {
     /// <summary>
-    /// Gets or sets the text content of the alert. If you want to use HTML or other components 
+    /// Gets or sets the text content of the alert. If you want to use HTML or other components
     /// use BodyTemplate property instead.
     /// </summary>
     [Parameter] public string? Content { get; set; }
@@ -32,46 +32,44 @@
     /// <summary>
     /// Gets or sets this component style.
     /// </summary>
-    [Parameter] public ComponentStyle? ColorScheme { get; set; } = null;
+    [Parameter] public ComponentStyle ColorScheme { get; set; } = ComponentStyle.None;
+
+    /// <summary>
+    /// Gets or sets additional CSS classes to the alert.
+    /// </summary>
+    [Parameter] public string? CssClasses { get; set; }
 
     /// <summary>
     /// Show or hide the close button.
     /// </summary>
-    [Parameter] public bool ShowCloseButton { get; set; } 
+    [Parameter] public bool ShowCloseButton { get; set; }
 
     /// <summary>
-    /// Enables or disables the alert animation. Default is true.
+    /// Fired when this alert is closed.
     /// </summary>
-    [Parameter] public bool EnableAnimation { get; set; } = true;
+    [Parameter] public EventCallback<VilmaAlert> AlertClosed { get; set; }
 
     /// <summary>
-    /// Set the animation duration in miliseconds. Default is 150 miliseconds
+    /// Gets or sets an unique identifier for this object
     /// </summary>
-    [Parameter] public int AnimationDuration { get; set; } = 150;
+    [Parameter] public string? ObjectId { get; set; }
 
-    private Dictionary<string, object> _alertAttributes = new Dictionary<string, object>();
     private ElementReference? _alertReference;
+    private CssClassCollection _alertCss = new CssClassCollection();
 
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
 
-        _alertAttributes.Clear();
-        List<string> parameters = new List<string>();
-        parameters.Add($"animation: {EnableAnimation}");
-        parameters.Add($"duration: {AnimationDuration}");
+        _alertCss.Clear();
+        //_alertCss.AddClasses("toast align-items-center show");
+        _alertCss.AddClasses("alert fade show");
+        _alertCss.Add(ColorScheme.GetAlertClass());
 
-        _alertAttributes.Add("uk-alert", string.Join(';', parameters));
+        if (ShowCloseButton)
+            _alertCss.Add("alert-dismissible");
 
-        // Style
-        if (ColorScheme == ComponentStyle.Success)
-            _alertAttributes.Add("class", "uk-alert-success");
-        else if (ColorScheme == ComponentStyle.Danger)
-            _alertAttributes.Add("class", "uk-alert-danger");
-        else if (ColorScheme == ComponentStyle.Warning)
-            _alertAttributes.Add("class", "uk-alert-warning");
-        else if (ColorScheme == ComponentStyle.Primary)
-            _alertAttributes.Add("class", "uk-alert-primary");
+        _alertCss.AddClasses(CssClasses);
     }
 
     protected override async void OnAfterRender(bool firstRender)

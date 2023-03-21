@@ -56,6 +56,18 @@
     /// </summary>
     [Parameter] public string? ContainerCss { get; set; }
 
+    /// <summary>
+    /// This event occurs when one of the tab pages is hidden. The closed tab 
+    /// is returned.
+    /// </summary>
+    [Parameter] public EventCallback<VilmaTabPage> TabPageHidden { get; set; }
+
+    /// <summary>
+    /// This event occurs when one of the tab pages is shown. The opened tab
+    /// is returned.
+    /// </summary>
+    [Parameter] public EventCallback<VilmaTabPage> TabPageShown { get; set; }
+
     private List<VilmaTabPage> _tabPages = new List<VilmaTabPage>();
     private CssClassCollection _btnCssBase = new CssClassCollection("nav-link");
     private CssClassCollection _btnCssActive = new CssClassCollection("nav-link active");
@@ -80,8 +92,27 @@
             _tabPages.Add(page);
 
         if (_tabPages.Count - 1 == ActiveTab)
-            page.SetActive();
+            page.SetActive(true);
 
         StateHasChanged();
+    }
+
+    public void ActivateTab(int index)
+    {
+        if (index >= 0 && index < _tabPages.Count)
+        {
+            var tab = _tabPages[index];
+            tab.SetActive();
+        }
+    }
+
+    internal void InvokeTabHiddedCallback(VilmaTabPage tab)
+    {
+        TabPageHidden.InvokeAsync(tab);
+    }
+
+    internal void InvokeTabShownCallback(VilmaTabPage tab)
+    {
+        TabPageShown.InvokeAsync(tab);
     }
 }

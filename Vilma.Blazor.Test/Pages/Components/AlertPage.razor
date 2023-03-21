@@ -1,0 +1,45 @@
+﻿<VilmaAlert ShowCloseButton="true" ColorScheme="ComponentStyle.Primary" @ref="@_alert1" AlertClosed="AlertClosed">
+    <BodyTemplate>
+        <h3>Title</h3>
+        <p>This is my content</p>
+    </BodyTemplate>
+</VilmaAlert>
+
+<VilmaAlert ShowCloseButton="true" ColorScheme="ComponentStyle.Warning">
+    <BodyTemplate>
+        <h3>Title</h3>
+        <p>This is my content</p>
+    </BodyTemplate>
+</VilmaAlert>
+
+<VilmaAlert ShowCloseButton="true" ColorScheme="ComponentStyle.Success">
+    <BodyTemplate>
+        <h3>Title</h3>
+        <p>This is my content</p>
+    </BodyTemplate>
+</VilmaAlert>
+
+<VilmaAlert ShowCloseButton="true" ColorScheme="ComponentStyle.Danger">
+    <BodyTemplate>
+        <h3>Title</h3>
+        <p>This is my content</p>
+    </BodyTemplate>
+</VilmaAlert>
+
+<button type="button" @onclick="CloseAlert1">Close alert 1</button>
+
+@code {
+    private VilmaAlert? _alert1;
+
+    private void AlertClosed()
+    {
+        Console.WriteLine("Alert closed");
+    }
+
+    private void CloseAlert1()
+    {
+        if (_alert1 != null)
+            _alert1.Close();
+    }
+}
+

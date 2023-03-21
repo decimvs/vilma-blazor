@@ -1,0 +1,157 @@
+﻿@inject IJSRuntime _jsRuntime
+@inherits VilmaBasicComponent
+
+<div class="@_toastCss" role="alert" aria-live="assertive" aria-atomic="true" @ref="@_toastReference">
+    @if (!string.IsNullOrWhiteSpace(Header) || HeaderTemplate != null)
+    {
+        <div class="toast-header">
+            @if (HeaderTemplate != null)
+            {
+                @HeaderTemplate
+            }
+            else
+            {
+                @Header
+            }
+            @if (ShowCloseButton)
+            {
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" @onclick="@(() => ToastClosed.InvokeAsync(this))"></button>
+            }
+        </div>
+        <div class="toast-body">
+            @if (BodyTemplate != null)
+            {
+                @BodyTemplate
+            }
+            else
+            {
+                @Content
+            }
+        </div>
+    }
+    else
+    {
+        <div class="d-flex">
+            <div class="toast-body">
+                @if (string.IsNullOrWhiteSpace(Content))
+                {
+                    @BodyTemplate
+                }
+                else
+                {
+                    @Content
+                }
+            </div>
+            @if (ShowCloseButton && string.IsNullOrWhiteSpace(Header) && HeaderTemplate == null)
+            {
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close" @onclick="@(() => ToastClosed.InvokeAsync(this))"></button>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>
+    /// Gets or sets the text content of the header. If you want to user HTML or other components
+    /// use HeaderTemplate property instead.
+    /// </summary>
+    [Parameter] public string? Header { get; set; }
+
+    /// <summary>
+    /// Gets or set the content of the header defined by pure HTML or other components.
+    /// </summary>
+    [Parameter] public RenderFragment? HeaderTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets the text content of the toast. If you want to use HTML or other components
+    /// use BodyTemplate property instead.
+    /// </summary>
+    [Parameter] public string? Content { get; set; }
+
+    /// <summary>
+    /// Gets or sets the content of the toast defined by pure HTML or other components.
+    /// </summary>
+    [Parameter] public RenderFragment? BodyTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets this component style.
+    /// </summary>
+    [Parameter] public ComponentStyle ColorScheme { get; set; } = ComponentStyle.None;
+
+    /// <summary>
+    /// Gets or sets additional CSS classes to the toast.
+    /// </summary>
+    [Parameter] public string? CssClasses { get; set; }
+
+    /// <summary>
+    /// Show or hide the close button.
+    /// </summary>
+    [Parameter] public bool ShowCloseButton { get; set; } = true;
+
+    /// <summary>
+    /// Fired when this toast is closed.
+    /// </summary>
+    [Parameter] public EventCallback<VilmaToast> ToastClosed { get; set; }
+
+    /// <summary>
+    /// Automatically hide the toast after the delay
+    /// </summary>
+    [Parameter] public bool Autohide { get; set; } = true;
+
+    /// <summary>
+    /// Delay in miliseconds before hiding the toast
+    /// </summary>
+    [Parameter] public int AutohideDelay { get; set; } = 5000;
+
+    /// <summary>
+    /// Gets or sets an unique identifier for this object
+    /// </summary>
+    [Parameter] public string? ObjectId { get; set; }
+
+    private ElementReference? _toastReference;
+    private CssClassCollection _toastCss = new CssClassCollection();
+    private bool _autoHidden;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _toastCss.Clear();
+        _toastCss.AddClasses("toast align-items-center show");
+        _toastCss.Add(ColorScheme.GetTextBgClass());
+        _toastCss.AddClasses(CssClasses);
+    }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var dnReference = DotNetObjectReference.Create(this);
+            await _jsRuntime.InvokeVoidAsync("VilmaBlazor.setToastListeners", dnReference, _toastReference);
+        }
+
+        if (Autohide && !_autoHidden)
+        {
+            _autoHidden = true;
+            StartAutohideTimer();
+        }
+
+        base.OnAfterRender(firstRender);
+    }
+
+    private async Task StartAutohideTimer()
+    {
+        await Task.Delay(AutohideDelay);
+        Close();
+        await ToastClosed.InvokeAsync(this);
+    }
+
+    /// <summary>
+    /// Closes this toast
+    /// </summary>
+    public void Close()
+    {
+        _jsRuntime.InvokeVoidAsync("VilmaBlazor.toastClose", _toastReference);
+    }
+}
+

@@ -35,7 +35,8 @@ VilmaBlazor.setAccordionItemListeners = function (dnRef, element) {
 
 /// Closes the referenced alert
 VilmaBlazor.alertClose = function (element) {
-    //UIkit.alert(element).close();
+    var alert = bootstrap.Alert.getOrCreateInstance(element);
+    alert.close();
 }
 
 /// Alert event listeners
@@ -43,6 +44,38 @@ VilmaBlazor.setAlertListeners = function (dnRef, element) {
     //_setBasicComponentListeners(dnRef, element);
 }
 
+
+/* TABS */
+
+VilmaBlazor.setActiveTab = function (element) {
+    var tab = bootstrap.Tab.getOrCreateInstance('#' + element);
+    tab.show();
+}
+
+VilmaBlazor.setTabPageListeners = function (dnRef, element) {
+    var tabEl = document.getElementById(element);
+
+    tabEl.addEventListener('shown.bs.tab', event => {
+        dnRef.invokeMethodAsync('OnTabShown');
+    });
+
+    tabEl.addEventListener('hidden.bs.tab', event => {
+        dnRef.invokeMethodAsync('OnTabHidden');
+    });
+}
+
+/* TOAST */
+
+/// Closes the referenced toast
+VilmaBlazor.toastClose = function (element) {
+    var toast = bootstrap.Toast.getOrCreateInstance(element);
+    toast.hide();
+}
+
+/// Toast event listeners
+VilmaBlazor.setToastListeners = function (dnRef, element) {
+    //_setBasicComponentListeners(dnRef, element);
+}
 
 function setCollapsibleListeners(dnRef, element) {
     var domelm = document.getElementById(element.id);

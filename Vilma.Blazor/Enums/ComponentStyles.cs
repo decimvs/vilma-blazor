@@ -9,8 +9,13 @@ namespace Vilma.Blazor
     public enum ComponentStyle
     {
         Primary,
+        Secondary,
         Success,
         Warning,
-        Danger
+        Danger,
+        Info,
+        Light,
+        Dark,
+        None
     }
 }

@@ -1,13 +1,35 @@
 ﻿@inherits VilmaBasicComponent
+@inject IJSRuntime _jsruntime
 
 <div class="@_tabPaneCss" id="@($"{TabPageId}-tab-pane")" role="tabpanel" aria-labelledby="@TabPageId" tabindex="0"> 
     @ContentTemplate
 </div>
 
 @code {
+    /// <summary>
+    /// Sets the header of the tab page
+    /// </summary>
     [Parameter] public string Header { get; set; } = "";
 
+    /// <summary>
+    /// Sets the content of the tab page as a set of HTML markup or other components.
+    /// </summary>
     [Parameter] public RenderFragment? ContentTemplate { get; set; }
+
+    /// <summary>
+    /// Sets the additional CSS classes.
+    /// </summary>
+    [Parameter] public string? CssClasses { get; set; }
+
+    /// <summary>
+    /// Fired after this item is shown.
+    /// </summary>
+    [Parameter] public EventCallback TabShown { get; set; }
+
+    /// <summary>
+    /// Fired after this item is hidden.
+    /// </summary>
+    [Parameter] public EventCallback TabHidden { get; set; }
 
     [CascadingParameter] private VilmaTabControl? Parent { get; set; }
 
@@ -17,17 +39,63 @@
     protected override void OnInitialized()
     {
         if (Parent == null)
-            throw new Exception("A VilmaTabPage should be defined within a VilmaTabControl");
+            throw new Exception("A VilmaTabPage must be defined within a VilmaTabControl");
 
         _tabPaneCss.AddClasses("tab-pane fade");
+        _tabPaneCss.AddClasses(CssClasses);
         Parent.AddTabPage(this);
 
         base.OnInitialized();
     }
 
-    internal void SetActive()
+    protected override void OnAfterRender(bool firstRender)
     {
-        _tabPaneCss.AddClasses("show active");
+        if (firstRender)
+        {
+            try
+            {
+                var dnReference = DotNetObjectReference.Create(this);
+                _jsruntime.InvokeVoidAsync("VilmaBlazor.setTabPageListeners", dnReference, TabPageId);
+            }
+            catch { }
+        }
+
+        base.OnAfterRender(firstRender);
     }
 
+    /// <summary>
+    /// Sets this tab page as active and shows its content.
+    /// </summary>
+    public void SetActive()
+    {
+        SetActive(false);
+    }
+
+    [JSInvokable("OnTabShown")]
+    public void OnTabShown()
+    {
+        TabShown.InvokeAsync();
+
+        Parent?.InvokeTabShownCallback(this);
+    }
+
+    [JSInvokable("OnTabHidden")]
+    public void OnTabHidden()
+    {
+        TabHidden.InvokeAsync();
+
+        Parent?.InvokeTabHiddedCallback(this);
+    }
+
+    internal void SetActive(bool firstSet = false)
+    {
+        try
+        {
+            if (firstSet)
+                _tabPaneCss.AddClasses("show active");
+
+            _jsruntime.InvokeVoidAsync("VilmaBlazor.setActiveTab", TabPageId);
+        }
+        catch { }
+    }
 }

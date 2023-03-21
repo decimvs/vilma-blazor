@@ -1,0 +1,93 @@
+﻿@inject VilmaToastService _toastService
+
+<div class="@_tContainerCss">
+    @foreach (var toast in _toasts)
+    {
+        <VilmaToast BodyTemplate="toast.BodyTemplate" ColorScheme="toast.ColorScheme" Content="@toast.Content" 
+                CssClasses="@toast.CssClasses" ShowCloseButton="toast.ShowCloseButton"
+                ToastClosed="OnAlertClosed" ObjectId="@toast.ObjectId"
+                Header="@toast.Header" HeaderTemplate="toast.HeaderTemplate"
+                Autohide="toast.Autohide" AutohideDelay="toast.AutohideDelay"/>
+    }
+</div>
+
+@code {
+    /// <summary>
+    /// Gets or sets the position of the toasts shown
+    /// </summary>
+    [Parameter] public ToastPosition Position { get; set; } = ToastPosition.TopRight;
+
+    private CssClassCollection _tContainerCss = new CssClassCollection();
+    private List<Toast> _toasts = new List<Toast>();
+    private List<Toast> _closedToasts = new List<Toast>();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _tContainerCss.Clear();
+        _tContainerCss.AddClasses("toast-container p-3 postion-relative");
+
+        switch (Position)
+        {
+            case ToastPosition.TopLeft:
+                _tContainerCss.AddClasses("top-0 start-0");
+                break;
+            case ToastPosition.TopCenter:
+                _tContainerCss.AddClasses("top-0 start-50 translate-middle-x");
+                break;
+            case ToastPosition.TopRight:
+                _tContainerCss.AddClasses("top-0 end-0");
+                break;
+            case ToastPosition.MiddleLeft:
+                _tContainerCss.AddClasses("top-50 start-0 translate-middle-y");
+                break;
+            case ToastPosition.MiddleRight:
+                _tContainerCss.AddClasses("top-50 end-0 translate-middle-y");
+                break;
+            case ToastPosition.Center:
+                _tContainerCss.AddClasses("top-50 start-50 translate-middle");
+                break;
+            case ToastPosition.BottomLeft:
+                _tContainerCss.AddClasses("bottom-0 start-0");
+                break;
+            case ToastPosition.BottomCenter:
+                _tContainerCss.AddClasses("bottom-0 start-50 translate-middle-x");
+                break;
+            case ToastPosition.BottomRight:
+                _tContainerCss.AddClasses("bottom-0 end-0");
+                break;
+        }
+
+        _toastService.ToastAdded += OnAlertAdded;
+    }
+
+    private void OnAlertAdded(object? sender, ToastEventArgs alertEventArgs)
+    {
+        _toasts.Add(alertEventArgs.Toast);  
+
+        InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+    private void OnAlertClosed(VilmaToast alert)
+    {
+        if (!string.IsNullOrWhiteSpace(alert.ObjectId))
+        {
+            var toastItem = _toasts.Find(t => t.ObjectId == alert.ObjectId);
+
+            if (toastItem != null)
+            {
+                _closedToasts.Add(toastItem);
+            }
+        }
+
+        if (_closedToasts.Count == _toasts.Count)
+        {
+            _closedToasts.Clear();
+            _toasts.Clear();
+        }
+    }
+}

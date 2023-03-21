@@ -1,0 +1,32 @@
+﻿<VilmaAccordion AllowMultipleOpen="true" CssClasses="m-3">
+    <Items>
+        <VilmaAccordionItem Title="Accordion 1" Content="My test content" SetOpen="true" />
+        <VilmaAccordionItem Title="Accordion 2" Content="My test content" @ref="_accordion" />
+        <VilmaAccordionItem Title="Accordion 3" Content="My test content" BodyCss="bg-warning" />
+    </Items>
+</VilmaAccordion>
+
+<button type="button" @onclick="OnButtonClick">Toggle Accordion 2</button>
+<button type="button" @onclick="@(() => _accordion.ShowItem())">Show Accordion 2</button>
+<button type="button" @onclick="@(() => _accordion.HideItem())">Hide Accordion 2</button>
+
+<VilmaAccordion SetFlush="true" CssClasses="m-3" ColorMode="ColorMode.Dark">
+    <Items>
+        @for (int i = 1; i <= 5; i++)
+        {
+            <VilmaAccordionItem Title="@($"Accordion {i}")" Content="My test content" />
+        }
+    </Items>
+</VilmaAccordion>
+
+<button type="button" @onclick="OnButtonClick">Toggle accordion 2</button>
+
+@code {
+    private VilmaAccordionItem? _accordion;
+
+    private void OnButtonClick()
+    {
+        if (_accordion != null)
+            _accordion.ToggleItem();
+    }
+}
