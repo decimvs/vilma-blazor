@@ -1,0 +1,16 @@
+﻿@code {
+    /// <summary>
+    /// Gets or sets the color mode for this component. The defaul 
+    /// color mode is Light.
+    /// </summary>
+    [Parameter] public ColorMode ColorMode { get; set; } = ColorMode.Light;
+
+    /// <summary>
+    /// Returns the selected color mode as a string value
+    /// </summary>
+    /// <returns></returns>
+    protected string GetColorMode()
+    {
+        return ColorMode.ToString().ToLower();
+    }
+}

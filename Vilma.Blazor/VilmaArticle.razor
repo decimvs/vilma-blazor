@@ -1,0 +1,55 @@
+﻿<article class="uk-article">
+    @if (Heading != null)
+    {
+        <div class="uk-article-title">@Heading</div>
+    }
+    else
+    {
+        <div class="uk-article-title">@HeadingText</div>
+    }
+
+    @if (MetaData != null)
+    {
+        <div class="uk-article-meta">@MetaData</div>
+    }
+    else
+    {
+        <div class="uk-article-meta">@MetaDataText</div>
+    }
+
+    @if (LeadingParagraph != null)
+    {
+        <div class="uk-text-lead">@LeadingParagraph</div>
+    }
+    else
+    {
+        <div class="uk-text-lead">@LeadingParagraphText</div>
+    }
+
+    @if (Content != null)
+    {
+        <div>@Content</div>
+    }
+    else
+    {
+        <div>@ContentText</div>
+    }
+</article>
+
+@code {
+    [Parameter] public RenderFragment? Heading { get; set; } = null;
+
+    [Parameter] public string? HeadingText { get; set; } = null;
+
+    [Parameter] public RenderFragment? MetaData { get; set; } = null;
+
+    [Parameter] public string? MetaDataText { get; set; }
+
+    [Parameter] public RenderFragment? LeadingParagraph { get; set; } = null;
+
+    [Parameter] public string? LeadingParagraphText { get; set; } = null;
+
+    [Parameter] public RenderFragment? Content { get; set; } = null;
+
+    [Parameter] public string? ContentText { get; set; } = null;
+}

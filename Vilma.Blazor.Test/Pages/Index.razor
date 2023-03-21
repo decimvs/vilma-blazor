@@ -1,0 +1,100 @@
+﻿@page "/"
+
+<h1>Hello, world!</h1>
+
+<VilmaTabControl ActiveTab="2" ControlCss="m-3 pt-2 pb-2" ContainerCss="p-2 border-end border-bottom border-start border-1" @ref="_tabControl">
+    <TabPages>
+        <VilmaTabPage Header="Accordion">
+            <ContentTemplate>
+                <VilmaAccordion AllowMultipleOpen="true" CssClasses="m-3">
+                    <Items>
+                        <VilmaAccordionItem Title="Accordion 1" Content="My test content" SetOpen="true" />
+                        <VilmaAccordionItem Title="Accordion 2" Content="My test content" @ref="_accordion" />
+                        <VilmaAccordionItem Title="Accordion 3" Content="My test content" BodyCss="bg-warning" />
+                    </Items>
+                </VilmaAccordion>
+
+                <button type="button" @onclick="OnButtonClick">Toggle Accordion 2</button>
+                <button type="button" @onclick="@(() => _accordion.ShowItem())">Show Accordion 2</button>
+                <button type="button" @onclick="@(() => _accordion.HideItem())">Hide Accordion 2</button>
+
+                <VilmaAccordion SetFlush="true" CssClasses="m-3" ColorMode="ColorMode.Dark">
+                    <Items>
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <VilmaAccordionItem Title="@($"Accordion {i}")" Content="My test content" />
+                        }
+                    </Items>
+                </VilmaAccordion>
+
+                <button type="button" @onclick="OnButtonClick">Toggle accordion 2</button>
+            </ContentTemplate>
+        </VilmaTabPage>
+        <VilmaTabPage Header="Alert">
+            <ContentTemplate>
+                <VilmaAlert ShowCloseButton="true" ColorScheme="ComponentStyle.Primary">
+                    <BodyTemplate>
+                        <h3>Title</h3>
+                        <p>This is my content</p>
+                    </BodyTemplate>
+                </VilmaAlert>
+
+                <VilmaAlert ShowCloseButton="true" ColorScheme="ComponentStyle.Warning">
+                    <BodyTemplate>
+                        <h3>Title</h3>
+                        <p>This is my content</p>
+                    </BodyTemplate>
+                </VilmaAlert>
+
+                <VilmaAlert ShowCloseButton="true" ColorScheme="ComponentStyle.Success">
+                    <BodyTemplate>
+                        <h3>Title</h3>
+                        <p>This is my content</p>
+                    </BodyTemplate>
+                </VilmaAlert>
+
+                <VilmaAlert ShowCloseButton="true" ColorScheme="ComponentStyle.Danger">
+                    <BodyTemplate>
+                        <h3>Title</h3>
+                        <p>This is my content</p>
+                    </BodyTemplate>
+                </VilmaAlert>
+            </ContentTemplate>
+        </VilmaTabPage>
+        <VilmaTabPage Header="Article">
+            <ContentTemplate>
+                <VilmaArticle HeadingText="This is my heading" LeadingParagraphText="Nam commodo tempor eros. Pellentesque hendrerit nisi sed tellus euismod, ac sagittis elit rutrum. Maecenas pharetra in purus at sodales. Cras eu augue a odio placerat pulvinar a in ipsum. Suspendisse convallis tristique facilisis. Donec nec elit at turpis semper laoreet vitae vel tortor."
+                        MetaDataText="Time to left my metadata" ContentText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam diam lacus, maximus sed massa non, pulvinar consequat ligula. Donec vel ante ullamcorper, posuere ante id, iaculis nunc. Aliquam sagittis mi non posuere viverra. Proin quis nulla eget ipsum egestas placerat. Donec condimentum molestie velit. Morbi commodo, risus ac condimentum aliquet, augue leo ultrices arcu, ac laoreet tortor dui sit amet odio. Cras suscipit nisl et purus euismod, at fringilla nibh egestas.
+
+                        Sed at sollicitudin tellus. Proin ut velit arcu. Curabitur iaculis tristique nisi, non ultricies arcu tempus in. Nulla placerat tortor justo, eget pretium odio finibus at. Aenean ultrices aliquet neque, a rutrum lacus dapibus in. Vestibulum vehicula tellus ut sem aliquet luctus. In faucibus metus sit amet neque gravida convallis. Maecenas finibus vestibulum sodales. Maecenas cursus ipsum eu velit tempus, quis facilisis magna tempor. Nam ut facilisis felis. In hac habitasse platea dictumst. Donec et nibh mattis, condimentum mauris et, efficitur dui. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse sodales ac enim eu scelerisque. Aenean bibendum, nisl maximus egestas tempus, urna mi finibus metus, a pretium mauris lorem in purus.
+
+                        Etiam accumsan lectus sit amet orci semper, molestie elementum sem convallis. Praesent eros nisi, lobortis ac diam sit amet, lobortis commodo augue. Duis eget ipsum sit amet tortor vulputate tristique. Morbi lacinia ullamcorper cursus. Suspendisse ac turpis vel massa ornare bibendum. Nullam quam metus, faucibus sed fermentum eu, vestibulum at est. Mauris a auctor libero. Sed a imperdiet mi. Proin non lacus sit amet purus scelerisque volutpat. Etiam ut consectetur eros. Sed viverra ut arcu quis feugiat. Morbi iaculis feugiat justo a viverra. Pellentesque porta enim lectus, at sollicitudin massa dictum eu. Nulla facilisi." />
+            </ContentTemplate>
+        </VilmaTabPage>
+    </TabPages>
+</VilmaTabControl>
+<button type="button">Active tab 1</button>
+
+
+@code {
+    private VilmaAccordionItem? _accordion;
+    private VilmaAlert? _alert1;
+    private VilmaTabControl? _tabControl;
+
+    private void OnButtonClick()
+    {
+        if (_accordion != null)
+            _accordion.ToggleItem();
+    }
+
+    private void AlertClosed()
+    {
+        Console.WriteLine("Alert closed");
+    }
+
+    private void CloseAlert1()
+    {
+        if (_alert1 != null)
+            _alert1.Close();
+    }
+}

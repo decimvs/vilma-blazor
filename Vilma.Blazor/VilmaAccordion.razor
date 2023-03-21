@@ -1,0 +1,60 @@
+﻿@inject IJSRuntime _jsRuntime
+@inherits VilmaBasicComponent
+
+<div class="@_accordionCss" @ref=_accordionElm id="@AccordionGuid" data-bs-theme="@GetColorMode()">
+    <CascadingValue Value="this">
+        @Items
+    </CascadingValue>
+</div>
+
+@code {
+    /// <summary>
+    /// Sets the items of this component.
+    /// </summary>
+    [Parameter] public RenderFragment? Items { get; set; }
+
+    /// <summary>
+    /// Sets the <code>.accordion-flush</code> class to the accordion.
+    /// </summary>
+    [Parameter] public bool SetFlush { get; set; }
+
+    /// <summary>
+    /// Allow multiple items opened at the same time.
+    /// </summary>
+    [Parameter] public bool AllowMultipleOpen { get; set; }
+
+    /// <summary>
+    /// Sets additional css classes to this component
+    /// </summary>
+    [Parameter] public string? CssClasses { get; set; }
+
+    public string AccordionGuid { get; set; } = DateTime.Now.Ticks.ToString("x");
+    private ElementReference _accordionElm;
+    private CssClassCollection _accordionCss = new CssClassCollection();
+
+    protected override void OnParametersSet()
+    {
+        _accordionCss.Clear();
+        _accordionCss.Add("accordion");
+
+        if (SetFlush)
+            _accordionCss.Add("accordion-flush");
+
+        _accordionCss.AddClasses(CssClasses);
+    }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (firstRender)
+        {
+            try
+            {
+                var dnReference = DotNetObjectReference.Create(this);
+                await _jsRuntime.InvokeVoidAsync("VilmaBlazor.enableAccordions", dnReference, _accordionElm);
+            }
+            catch { }
+        }
+    }
+}

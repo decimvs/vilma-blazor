@@ -1,0 +1,33 @@
+﻿@inherits VilmaBasicComponent
+
+<div class="@_tabPaneCss" id="@($"{TabPageId}-tab-pane")" role="tabpanel" aria-labelledby="@TabPageId" tabindex="0"> 
+    @ContentTemplate
+</div>
+
+@code {
+    [Parameter] public string Header { get; set; } = "";
+
+    [Parameter] public RenderFragment? ContentTemplate { get; set; }
+
+    [CascadingParameter] private VilmaTabControl? Parent { get; set; }
+
+    public readonly string TabPageId = DateTime.Now.Ticks.ToString("x");
+    private CssClassCollection _tabPaneCss = new CssClassCollection();
+
+    protected override void OnInitialized()
+    {
+        if (Parent == null)
+            throw new Exception("A VilmaTabPage should be defined within a VilmaTabControl");
+
+        _tabPaneCss.AddClasses("tab-pane fade");
+        Parent.AddTabPage(this);
+
+        base.OnInitialized();
+    }
+
+    internal void SetActive()
+    {
+        _tabPaneCss.AddClasses("show active");
+    }
+
+}

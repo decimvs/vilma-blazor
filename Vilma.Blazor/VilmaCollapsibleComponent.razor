@@ -1,0 +1,86 @@
+﻿@inject IJSRuntime _jsRuntime
+@inherits VilmaBasicComponent
+
+@code {
+    protected ElementReference? _collapsibleItem;
+
+    /// <summary>
+    /// Marks this accordion item as open. When rendered it will appear opened.
+    /// </summary>
+    [Parameter] public bool SetOpen { get; set; } = false;
+
+    /// <summary>
+    /// Fired after this item is shown.
+    /// </summary>
+    [Parameter] public EventCallback ItemShown { get; set; }
+
+
+    /// <summary>
+    /// Fired after this item is hidden.
+    /// </summary>
+    [Parameter] public EventCallback ItemHidden { get; set; }
+
+
+    [JSInvokable("OnItemShown")]
+    public void OnItemShown()
+    {
+        ItemShown.InvokeAsync();
+    }
+
+    [JSInvokable("OnItemHidden")]
+    public void OnItemHidden()
+    {
+        ItemHidden.InvokeAsync();
+    }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (firstRender)
+        {
+            try
+            {
+                var dnReference = DotNetObjectReference.Create(this);
+                await _jsRuntime.InvokeVoidAsync("VilmaBlazor.setAccordionItemListeners", dnReference, _collapsibleItem);
+            }
+            catch { }
+        }
+    }
+
+    /// <summary>
+    /// Toggles the content pane
+    /// </summary>
+    public async void ToggleItem()
+    {
+        try
+        {
+            await _jsRuntime.InvokeVoidAsync("VilmaBlazor.accordionToggle", _collapsibleItem);
+
+            if (SetOpen)
+                SetOpen = false;
+        }
+        catch { }
+    }
+
+    public async void ShowItem()
+    {
+        try
+        {
+            await _jsRuntime.InvokeVoidAsync("VilmaBlazor.accordionShow", _collapsibleItem);
+        }
+        catch { }
+    }
+
+    public async void HideItem()
+    {
+        try
+        {
+            await _jsRuntime.InvokeVoidAsync("VilmaBlazor.accordionHide", _collapsibleItem);
+
+            if (SetOpen)
+                SetOpen = false;
+        }
+        catch { }
+    }
+}
