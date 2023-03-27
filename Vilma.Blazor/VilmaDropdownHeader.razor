@@ -1,0 +1,30 @@
+﻿<li>
+    <div class="dropdown-header">
+        @if (TextTemplate != null)
+        {
+            @TextTemplate
+        }
+        else
+        {
+            <h6 class="@_cssClasses">@Text</h6>
+        }
+    </div>
+</li>
+
+@code {
+    [Parameter] public string? Text { get; set; }
+
+    [Parameter] public RenderFragment? TextTemplate { get; set; }
+
+    [Parameter] public string? CssClasses { get; set; }
+
+    private CssClassCollection _cssClasses = new CssClassCollection();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _cssClasses.Clear();
+        _cssClasses.AddClasses(CssClasses);
+    }
+}

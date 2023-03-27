@@ -35,7 +35,7 @@ namespace Vilma.Blazor.Models
         /// <summary>
         /// Gets or sets this component style.
         /// </summary>
-        public ComponentStyle ColorScheme { get; set; } = ComponentStyle.None;
+        public ColorScheme ColorScheme { get; set; } = ColorScheme.None;
 
         /// <summary>
         /// Gets or sets additional CSS classes to the toast.

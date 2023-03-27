@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vilma.Blazor
 {
-    public enum ComponentStyle
+    public enum ColorScheme
     {
         Primary,
         Secondary,
@@ -16,6 +16,11 @@ namespace Vilma.Blazor
         Info,
         Light,
         Dark,
+        /// <summary>
+        /// This color scheme is limited only in some components:
+        /// VilmaButton
+        /// </summary>
+        Link,
         None
     }
 }

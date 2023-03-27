@@ -12,7 +12,7 @@ namespace Vilma.Blazor
     {
         internal EventHandler<ToastEventArgs> ToastAdded { get; set; }
 
-        public void AddToast(string content, ComponentStyle colorScheme = ComponentStyle.None, bool showCloseButton = true, 
+        public void AddToast(string content, ColorScheme colorScheme = ColorScheme.None, bool showCloseButton = true, 
                 string? additionalCss = null, bool autohide = true, int autohideDelay = 5000)
         {
             var alert = new Toast

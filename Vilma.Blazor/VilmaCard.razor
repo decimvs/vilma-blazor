@@ -1,0 +1,232 @@
+﻿<div class="@_cardCss">
+    @if (ImageUrl != null && ImagePosition == CardImagePositions.Top || ImagePosition == CardImagePositions.Overlay)
+    {
+        <img src="@ImageUrl" class="@_topImgCss" alt="@ImageAlt" />
+    }
+    else if (!string.IsNullOrWhiteSpace(Header) || HeaderTemplate != null)
+    {
+        <div class="@_headerCss">
+            @if (HeaderTemplate != null)
+            {
+                @HeaderTemplate
+            }
+            else
+            {
+                @Header
+            }
+        </div>
+    }
+
+    <div class="@_overlayCss">
+        @* Title *@
+        @if (TitleTemplate != null)
+        {
+            <div class="@_titleCss">@TitleTemplate</div>
+        }
+        else if (!string.IsNullOrWhiteSpace(Title))
+        {
+            <h5 class="@_titleCss">@Title</h5>
+        }
+
+        @* Subtitle *@
+        @if (SubtitleTemplate != null)
+        {
+            <div class="@_subtitleCss">@SubtitleTemplate</div>
+        }
+        else if (!string.IsNullOrWhiteSpace(Subtitle))
+        {
+            <h6 class="@_subtitleCss">@Subtitle</h6>
+        }
+
+        @* Body content *@
+        @if (BodyTemplate != null)
+        {
+            <div class="@_bodyCss">@BodyTemplate</div>
+        }
+        else if (!string.IsNullOrWhiteSpace(Body))
+        {
+            <h6 class="@_bodyCss">@Body</h6>
+        }
+    </div>
+
+    @if (ImagePosition != CardImagePositions.Overlay)
+    {
+        @if (ImageUrl != null && ImagePosition == CardImagePositions.Bottom)
+        {
+            <img src="@ImageUrl" class="card-img-bottom" alt="@ImageAlt" />
+        }
+        else if (!string.IsNullOrWhiteSpace(Footer) || FooterTemplate != null)
+        {
+            <div class="@_footerCss">
+                @if (FooterTemplate != null)
+                {
+                    @FooterTemplate
+                }
+                else
+                {
+                    @Footer
+                }
+            </div>
+        }
+    }
+</div>
+
+@code {
+    /// <summary>
+    /// Gets or sets the additional classes for the card component.
+    /// </summary>
+    [Parameter] public string? CssClasses { get; set; }
+
+    /// <summary>
+    /// Gets or sets the image url. If null no image is displayed.
+    /// </summary>
+    [Parameter] public string? ImageUrl { get; set; }
+
+    /// <summary>
+    /// Gets or sets the alt property for the image.
+    /// </summary>
+    [Parameter] public string? ImageAlt { get; set; }
+
+    /// <summary>
+    /// Gets or sets the position of the image.
+    /// </summary>
+    [Parameter] public CardImagePositions ImagePosition { get; set; } = CardImagePositions.Top;
+
+    /// <summary>
+    /// Gets or sets the title of the card. For markup and/or other components use TitleTemplate
+    /// instead.
+    /// </summary>
+    [Parameter] public string? Title { get; set; }
+
+    /// <summary>
+    /// Gets or sets the title of the card as HTML markup and/or other components.
+    /// </summary>
+    [Parameter] public RenderFragment? TitleTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets additional css classes to the title.
+    /// </summary>
+    [Parameter] public string? TitleCssClasses { get; set; }
+
+    /// <summary>
+    /// Gets or sets the subtitle of the card. For markup and/or other components use SubtitleTemplate
+    /// instead.
+    /// </summary>
+    [Parameter] public string? Subtitle { get; set; }
+
+    /// <summary>
+    /// Gets or sets the subtitle of the card as HTML markup and/or other components.
+    /// </summary>
+    [Parameter] public RenderFragment? SubtitleTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets additional css classes to the subtitle.
+    /// </summary>
+    [Parameter] public string? SubtitleCssClasses { get; set; }
+
+    /// <summary>
+    /// Gets or sets the title of the body content. For markup and/or other components use BodyTemplate
+    /// instead.
+    /// </summary>
+    [Parameter] public string? Body { get; set; }
+
+    /// <summary>
+    /// Gets or sets the body of the card as HTML markup and/or other components.
+    /// </summary>
+    [Parameter] public string? BodyTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets additional css classes to the body.
+    /// </summary>
+    [Parameter] public string? BodyCssClasses { get; set; }
+
+    /// <summary>
+    /// Gets or sets the header of the card. For markup and/or other components use HeaderTemplate
+    /// instead.
+    /// </summary>
+    [Parameter] public string? Header { get; set; }
+
+    /// <summary>
+    /// Gets or sets the header of the card as HTML markup and/or other components.
+    /// </summary>
+    [Parameter] public RenderFragment? HeaderTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets additional css classes to the header.
+    /// </summary>
+    [Parameter] public string? HeaderCssClasses { get; set; }
+
+    /// <summary>
+    /// Gets or sets the footer of the card. For markup and/or other components use FooterTemplate
+    /// instead.
+    /// </summary>
+    [Parameter] public string? Footer { get; set; }
+
+    /// <summary>
+    /// Gets or sets the footer of the card as HTML markup and/or other components.
+    /// </summary>
+    [Parameter] public RenderFragment? FooterTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets additional css classes to the footer.
+    /// </summary>
+    [Parameter] public string? FooterCssClasses { get; set; }
+
+    /// <summary>
+    /// Gets or sets the color style used in the card.
+    /// </summary>
+    [Parameter] public ColorScheme ColorScheme { get; set; } = ColorScheme.None;
+
+    private CssClassCollection _cardCss = new CssClassCollection();
+    private CssClassCollection _topImgCss = new CssClassCollection();
+    private CssClassCollection _overlayCss = new CssClassCollection();
+    private CssClassCollection _titleCss = new CssClassCollection();
+    private CssClassCollection _subtitleCss = new CssClassCollection();
+    private CssClassCollection _bodyCss = new CssClassCollection();
+    private CssClassCollection _headerCss = new CssClassCollection();
+    private CssClassCollection _footerCss = new CssClassCollection();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _cardCss.Clear();
+        _topImgCss.Clear();
+        _overlayCss.Clear();
+        _headerCss.Clear();
+        _titleCss.Clear();
+        _subtitleCss.Clear();
+        _bodyCss.Clear();
+        _footerCss.Clear();
+
+        _cardCss.Add("card");
+        _cardCss.AddClasses(CssClasses);
+        _cardCss.Add(ColorScheme.GetTextBgClass());
+
+        if (ImagePosition == CardImagePositions.Overlay)
+        {
+            _topImgCss.Add("card-img");
+            _overlayCss.Add("card-img-overlay");
+        }
+        else
+        {
+            _topImgCss.Add("card-img-top");
+            _overlayCss.Add("card-body");
+        }
+
+        _headerCss.Add("card-header");
+        _headerCss.AddClasses(HeaderCssClasses);
+
+        _titleCss.Add("card-title");
+        _titleCss.AddClasses(TitleCssClasses);
+
+        _subtitleCss.Add("card-subtitle");
+        _subtitleCss.AddClasses(SubtitleCssClasses);
+
+        _bodyCss.Add("card-text");
+        _bodyCss.AddClasses(BodyCssClasses);
+
+        _footerCss.Add("card-footer");
+        _footerCss.AddClasses(FooterCssClasses);
+    }
+}

@@ -1,0 +1,178 @@
+﻿<h3>Buttons</h3>
+
+<div>
+    <VilmaButton Content="Button" />
+
+    <VilmaButton ColorScheme="ColorScheme.Link" Content="Link button"/>
+</div>
+
+<div class="mt-3">
+    <VilmaButton ColorScheme="ColorScheme.Secondary">
+        <ContentTemplate>
+            <div>
+                <VilmaIcon Icon="Icons.Android" IconWidth="28" IconHeight="28" />
+                Icon in content template
+            </div>
+        </ContentTemplate>
+    </VilmaButton>
+    <VilmaButton ColorScheme="ColorScheme.Danger" Content="Icon custom size" Icon="Icons.Android" IconWidth="48" IconHeight="48" />
+    <VilmaButton ColorScheme="ColorScheme.Success" Content="Icon set in button" Icon="Icons.PuzzleFill" />
+    <VilmaButton ColorScheme="ColorScheme.Primary" Content="Icon set in button" Icon="Icons.PuzzleFill" IconColorScheme="ColorScheme.Danger" />
+    <VilmaButton ColorScheme="ColorScheme.Success" Content="Icon set in button" Icon="Icons.Puzzle" IconPosition="IconPositions.End" />
+</div>
+
+<div class="mt-3">
+    <VilmaButton ColorScheme="ColorScheme.Success" Content="Outline button" SetOutline="true" />
+</div>
+
+<div class="mt-3">
+    <VilmaButton ColorScheme="ColorScheme.Warning" Content="Big button" ButtonSize="Sizes.Large" />
+    <VilmaButton ColorScheme="ColorScheme.Warning" Content="Normal button" />
+    <VilmaButton ColorScheme="ColorScheme.Warning" Content="Small button" ButtonSize="Sizes.Small" />
+</div>
+
+<div class="mt-3">
+    <VilmaButton ColorScheme="ColorScheme.Primary" Content="Disabled button" IsDisabled="true" />
+    <VilmaButton ColorScheme="ColorScheme.Secondary" Content="Disabled button" IsDisabled="true" />
+    <VilmaButton ColorScheme="ColorScheme.Success" Content="Disabled button" SetOutline="true" IsDisabled="true" />
+</div>
+
+<div class="mt-3">
+    <VilmaButton ColorScheme="ColorScheme.Primary" Content="Toggle button 1" EnableToggleFunction="true" @ref="@_btn1" OnButtonToggled="BtnToggled" />
+    <VilmaButton ColorScheme="ColorScheme.Primary" Content="Active toggle button" EnableToggleFunction="true" IsStatusActive="true" />
+    <VilmaButton ColorScheme="ColorScheme.Primary" Content="Disabled toggle button" EnableToggleFunction="true" IsDisabled="true" />
+</div>
+<div class="mt-1">
+    <VilmaButton ColorScheme="ColorScheme.Info" Content="Toggle Btn 1" OnClick="ToggleButton1" />
+    <VilmaButton ColorScheme="ColorScheme.Info" Content="Check Btn 1 status" OnClick="GetButton1Status" />
+    <p><b>Current status: </b>@_status</p>
+    <p><b>Event status: </b>@_estatus</p>
+</div>
+
+<div class="mt-3">
+    <VilmaButtonGroup>
+        <Buttons>
+            <VilmaButton ColorScheme="ColorScheme.Secondary" Content="Left" />
+            <VilmaButton ColorScheme="ColorScheme.Secondary" Content="Center" />
+            <VilmaButton ColorScheme="ColorScheme.Secondary" Content="Right" />
+        </Buttons>
+    </VilmaButtonGroup>
+</div>
+
+<div class="mt-3">
+    <VilmaButtonGroup IsDisabled="true">
+        <Buttons>
+            <VilmaButton ColorScheme="ColorScheme.Secondary" Content="Left" />
+            <VilmaButton ColorScheme="ColorScheme.Secondary" Content="Center" />
+            <VilmaButton ColorScheme="ColorScheme.Secondary" Content="Right" />
+        </Buttons>
+    </VilmaButtonGroup>
+</div>
+
+<div class="mt-3">
+    <VilmaButtonGroup ShowVertical="true">
+        <Buttons>
+            <VilmaButton ColorScheme="ColorScheme.Secondary" Content="Top" />
+            <VilmaButton ColorScheme="ColorScheme.Secondary" Content="Center" />
+            <VilmaButton ColorScheme="ColorScheme.Secondary" Content="Bottom" />
+        </Buttons>
+    </VilmaButtonGroup>
+</div>
+
+<div class="mt-3">
+    <VilmaButtonGroup>
+        <Buttons>
+            <VilmaButton ColorScheme="ColorScheme.Secondary" Content="Left" SetOutline="true" />
+            <VilmaButton ColorScheme="ColorScheme.Secondary" Content="Center" SetOutline="true" />
+            <VilmaButton ColorScheme="ColorScheme.Secondary" Content="Right" SetOutline="true" />
+        </Buttons>
+    </VilmaButtonGroup>
+</div>
+
+<div class="mt-3">
+    <VilmaButtonGroup>
+        <Buttons>
+            <VilmaButton ColorScheme="ColorScheme.Primary" Icon="Icons.RewindFill" />
+            <VilmaButton ColorScheme="ColorScheme.Primary" Icon="Icons.PlayFill" />
+            <VilmaButton ColorScheme="ColorScheme.Primary" Icon="Icons.StopFill" />
+            <VilmaButton ColorScheme="ColorScheme.Primary" Icon="Icons.FastForwardFill"/>
+        </Buttons>
+    </VilmaButtonGroup>
+</div>
+
+<div class="mt-3">
+    <VilmaButtonGroup @ref="@_checkboxGroup">
+        <Buttons>
+            <VilmaButton ColorScheme="ColorScheme.Primary" Content="Checkbox 1" ButtonType="ButtonTypes.Checkbox" SetOutline="true" CheckedValue="@("Option1")" />
+            <VilmaButton ColorScheme="ColorScheme.Primary" Content="Checkbox 2" ButtonType="ButtonTypes.Checkbox" Checked="true" SetOutline="true" CheckedValue="@("Option2")" />
+            <VilmaButton ColorScheme="ColorScheme.Primary" Content="Checkbox 3" ButtonType="ButtonTypes.Checkbox" SetOutline="true" CheckedValue="@("Option3")" />
+        </Buttons>
+    </VilmaButtonGroup>
+</div>
+<div class="mt-1">
+    <VilmaButton ColorScheme="ColorScheme.Info" Content="Get checked values" OnClick="GetCheckedValues" />
+</div>
+
+<div class="mt-3">
+    <VilmaButtonGroup>
+        <Buttons>
+            <VilmaButton ColorScheme="ColorScheme.Primary" Content="Radio Button 1" ButtonType="ButtonTypes.Radio" SetOutline="true" Checked="true" />
+            <VilmaButton ColorScheme="ColorScheme.Primary" Content="Radio Button 2" ButtonType="ButtonTypes.Radio" SetOutline="true" />
+            <VilmaButton ColorScheme="ColorScheme.Primary" Content="Radio Button 3" ButtonType="ButtonTypes.Radio" SetOutline="true" />
+        </Buttons>
+    </VilmaButtonGroup>
+</div>
+
+@code {
+    private VilmaButton? _btn1;
+    private string _status = "Unknown";
+    private string _estatus = "Unknown";
+    private VilmaButtonGroup? _checkboxGroup;
+
+    private void ToggleButton1()
+    {
+        if (_btn1 != null)
+        {
+            _btn1.ToggleActiveState();
+        }
+    }
+
+    private async void GetButton1Status()
+    {
+        if (_btn1 != null)
+        {
+            var status = await _btn1.GetCurrentStatusAsync();
+
+            if (status != null)
+            {
+                if (status.Value)
+                    _status = "Active";
+                else if (!status.Value)
+                    _status = "Inactive";
+
+                StateHasChanged();
+            }
+        }
+    }
+
+    private async void BtnToggled(bool? status)
+    {
+        if (status != null)
+        {
+            if (status.Value)
+                _estatus = "Active";
+            else if (!status.Value)
+                _estatus = "Inactive";
+
+            StateHasChanged();
+        }
+    }
+
+    private async void GetCheckedValues()
+    {
+        if (_checkboxGroup != null)
+        {
+            var checkedVals = await _checkboxGroup.GetCheckedValuesAsync();
+        }
+    }
+}

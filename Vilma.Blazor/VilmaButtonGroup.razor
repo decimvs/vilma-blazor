@@ -1,0 +1,93 @@
+﻿<div class="@_cssClasses" role="group" aria-label="@AriaLabel">
+    <CascadingValue Value="this">
+        @if (Buttons != null)
+        {
+            @Buttons
+        }
+    </CascadingValue>
+</div>
+
+@code {
+    [Parameter] public RenderFragment? Buttons { get; set; }
+
+    /// <summary>
+    /// By default the group is rendered as an horizontal bar.
+    /// By setting this property to true the group will be rendered
+    /// as a vertical column.
+    /// </summary>
+    [Parameter] public bool ShowVertical { get; set; }
+
+    [Parameter] public string AriaLabel { get; set; } = "";
+
+    [Parameter] public string? CssClasses { get; set; }
+
+    [Parameter] public bool IsDisabled { get; set; }
+
+    [Parameter] public string GroupName { get; set; } = DateTime.Now.Ticks.ToString("x");
+
+    private CssClassCollection _cssClasses = new CssClassCollection();
+    private List<VilmaGroupableComponent> _children = new List<VilmaGroupableComponent>();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _cssClasses.Clear();
+        _children.Clear();
+
+        _cssClasses.AddClasses(CssClasses);
+
+        if (ShowVertical)
+            _cssClasses.Add("btn-group-vertical");
+        else
+            _cssClasses.Add("btn-group");
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        SetChildrenDisableStatus();
+    }
+
+    internal void AddChild(VilmaGroupableComponent child)
+    {
+        if (!_children.Contains(child))
+            _children.Add(child);
+    }
+
+    private void SetChildrenDisableStatus()
+    {
+        foreach (var child in _children)
+        {
+            child.SetDisabledStatus(IsDisabled);
+        }
+    }
+
+    /// <summary>
+    /// Returns a list containing all the values of the 
+    /// checkbox or radio buttons that are checked.
+    /// In the case of radio button the list contains
+    /// only one element.
+    /// </summary>
+    /// <returns></returns>
+    public async Task<IEnumerable<object?>> GetCheckedValuesAsync()
+    {
+        List<object?> items = new List<object?>();
+
+        for(int i = 0; i < _children.Count; i++)
+        {
+            if (_children[i] is VilmaButton)
+            {
+                var childBtn = _children[i] as VilmaButton;
+
+                if (childBtn.ButtonType != ButtonTypes.Button && await childBtn.IsCheckedAsync())
+                {
+                    items.Add(childBtn.CheckedValue);
+                }
+            }
+        }
+
+        return items;
+    }
+}

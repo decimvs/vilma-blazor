@@ -1,0 +1,78 @@
+﻿<li class="@_cssClasses" @attributes="@_attributes">
+    @if (BodyTemplate != null)
+    {
+        @BodyTemplate
+    }
+    else
+    {
+        @if (!string.IsNullOrWhiteSpace(LinkUrl))
+        {
+            <a href="@LinkUrl" class="@_linkCssClasses">@LinkText</a>
+        }
+        else
+        {
+            @LinkText
+        }
+    }
+</li>
+
+@code {
+    /// <summary>
+    /// Gets or sets the text of the link. You can define the link url using LinkUrl.
+    /// If you want to use HTML or other components.
+    /// use BodyTemplate property instead.
+    /// </summary>
+    [Parameter] public string? LinkText { get; set; }
+
+    /// <summary>
+    /// Gets or sets the URL of the link. If no URL is provided only the value of Link 
+    /// is displayed. If you define the BodyTemplate property this property will be 
+    /// ignored.
+    /// </summary>
+    [Parameter] public string? LinkUrl { get; set; }
+
+    /// <summary>
+    /// Gets or sets the content of the item defined by pure HTML or other components.
+    /// </summary>
+    [Parameter] public RenderFragment? BodyTemplate { get; set; }
+
+    /// <summary>
+    /// Set this item as Active
+    /// </summary>
+    [Parameter] public bool SetAsActive { get; set; } = false;
+
+    /// <summary>
+    /// Gets or sets additional CSS classes to the item.
+    /// </summary>
+    [Parameter] public string? ItemCssClasses { get; set; }
+
+    /// <summary>
+    /// Gets or sets additional CSS classes to the link. This property
+    /// is only used if a LinkUrl is defined.
+    /// </summary>
+    [Parameter] public string? LinkCssClasses { get; set; }
+
+    [CascadingParameter] internal VilmaBreadcrumb Parent { get; set; }
+
+    private CssClassCollection _cssClasses = new CssClassCollection();
+    private CssClassCollection _linkCssClasses = new CssClassCollection();
+    private Dictionary<string, object> _attributes = new Dictionary<string, object>();
+
+    protected override void OnParametersSet()
+    {
+        _cssClasses.Clear();
+        _cssClasses.Add("breadcrumb-item");
+
+        if (SetAsActive)
+        {
+            _cssClasses.Add("active");
+            _attributes.Clear();
+            _attributes.Add("aria-current", "page");
+        }
+
+        _cssClasses.AddClasses(ItemCssClasses);
+
+        _linkCssClasses.Clear();
+        _linkCssClasses.AddClasses(LinkCssClasses);
+    }
+}

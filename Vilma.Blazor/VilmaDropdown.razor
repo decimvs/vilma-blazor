@@ -1,0 +1,74 @@
+﻿@inherits VilmaBasicComponent
+@inject IJSRuntime _jsRuntime
+
+<div class="@_dropdownCss" data-bs-theme="@GetColorMode()" @ref="_dropdownRef" id="@_id">
+    @if (ButtonTemplate != null)
+    {
+        <button class="vm-btn-unstyled" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            @ButtonTemplate
+        </button>
+    }
+    else
+    {
+        <button class="@_btnCss" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            @Text
+        </button>
+    }
+    <ul class="dropdown-menu">
+        @Items
+    </ul>
+</div>
+
+
+@code {
+    [Parameter] public string? Text { get; set; }
+
+    [Parameter] public RenderFragment? ButtonTemplate { get; set; }
+
+    [Parameter] public RenderFragment Items { get; set; }
+
+    [Parameter] public string? ButtonCssClasses { get; set; }
+
+    [Parameter] public string? CssClasses { get; set; }
+
+    [Parameter] public ColorScheme ColorScheme { get; set; } = ColorScheme.Primary;
+
+    [Parameter] public Sizes Size { get; set; } = Sizes.Normal;
+
+    [Parameter] public DropdownDirections Direction { get; set; } = DropdownDirections.Down;
+
+    private CssClassCollection _btnCss = new CssClassCollection();
+    private CssClassCollection _dropdownCss = new CssClassCollection();
+    private ElementReference _dropdownRef;
+    private string _id = Guid.NewGuid().ToString();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _btnCss.Clear();
+        _dropdownCss.Clear();
+
+        _btnCss.AddClasses("btn dropdown-toggle");
+        _btnCss.Add(ColorScheme.GetButtonClass());
+        _btnCss.AddClasses(ButtonCssClasses);
+        _btnCss.Add(Size.GetSizeClass());
+
+        _dropdownCss.AddClasses(Direction.GetDirectionClass());
+        _dropdownCss.AddClasses(CssClasses);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (firstRender)
+        {
+            try
+            {
+                _jsRuntime.InvokeVoidAsync("VilmaBlazor.dropdownInit", _dropdownRef);
+            }
+            catch { }
+        }
+    }
+}

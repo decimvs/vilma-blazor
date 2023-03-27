@@ -1,0 +1,73 @@
+﻿<h3>Cards</h3>
+
+<div class="vstack gap-3">
+    <VilmaCard Title="Standard card title" Subtitle="Card subtitle" 
+            Body="Some quick example text to buld on the card title and make up the bulk of card's content."
+            CssClasses="col-4"/>
+
+    <VilmaCard Title="Standard card title" Subtitle="Card subtitle" Header="Card header" Footer="Card footer"
+               Body="Some quick example text to buld on the card title and make up the bulk of card's content."
+               CssClasses="col-4" />
+
+    <VilmaCard Title="Standard card title" Subtitle="Card subtitle" Footer="Card footer muted" FooterCssClasses="text-muted"
+               Body="Some quick example text to buld on the card title and make up the bulk of card's content."
+               CssClasses="col-4">
+        <HeaderTemplate>
+            <div>
+                <VilmaIcon Icon="Icons.Bootstrap" IconWidth="24" IconHeight="24" ColorScheme="ColorScheme.Primary" /> 
+                <strong>Card Header</strong>
+            </div>
+        </HeaderTemplate>
+    </VilmaCard>
+
+    <VilmaCard Title="Standard card title" Subtitle="Card subtitle" Header="Card header" Footer="Card footer"
+               Body="Some quick example text to buld on the card title and make up the bulk of card's content."
+               CssClasses="col-4" ImageUrl="/images/dummy_600x400_ffffff_cccccc.png" ImageAlt="Placeholder image" />
+
+    <VilmaCard Title="Standard card title" Subtitle="Card subtitle" Header="Card header" Footer="Card footer"
+               Body="Some quick example text to buld on the card title and make up the bulk of card's content."
+               CssClasses="col-4" ImageUrl="/images/dummy_600x400_ffffff_cccccc.png" ImageAlt="Placeholder image"
+               ImagePosition="CardImagePositions.Bottom"/>
+
+    <VilmaCard Title="Standard card title" Subtitle="Card subtitle" Header="Card header" Footer="Card footer"
+               Body="Some quick example text to buld on the card title and make up the bulk of card's content."
+               CssClasses="col-4" ImageUrl="/images/dummy_600x400_ffffff_cccccc.png" ImageAlt="Placeholder image"
+               ImagePosition="CardImagePositions.Overlay" />
+
+    <VilmaCard Title="Standard card title" Subtitle="Card subtitle" Header="Header"
+               Body="Some quick example text to buld on the card title and make up the bulk of card's content."
+               CssClasses="col-4" ColorScheme="ColorScheme.Primary"/>
+
+    <VilmaCard Title="Standard card title" Subtitle="Card subtitle" Header="Header"
+               Body="Some quick example text to buld on the card title and make up the bulk of card's content."
+               CssClasses="col-4" ColorScheme="ColorScheme.Secondary" />
+
+    <VilmaCard Title="Standard card title" Subtitle="Card subtitle" Header="Header"
+               Body="Some quick example text to buld on the card title and make up the bulk of card's content."
+               CssClasses="col-4" ColorScheme="ColorScheme.Success" />
+
+    <VilmaCard Title="Standard card title" Subtitle="Card subtitle" Header="Header"
+               Body="Some quick example text to buld on the card title and make up the bulk of card's content."
+               CssClasses="col-4" ColorScheme="ColorScheme.Danger" />
+
+    <VilmaCard Title="Standard card title" Subtitle="Card subtitle" Header="Header"
+               Body="Some quick example text to buld on the card title and make up the bulk of card's content."
+               CssClasses="col-4" ColorScheme="ColorScheme.Warning" />
+
+    <VilmaCard Title="Standard card title" Subtitle="Card subtitle" Header="Header"
+               Body="Some quick example text to buld on the card title and make up the bulk of card's content."
+               CssClasses="col-4" ColorScheme="ColorScheme.Info" />
+
+    <VilmaCard Title="Standard card title" Subtitle="Card subtitle" Header="Header"
+               Body="Some quick example text to buld on the card title and make up the bulk of card's content."
+               CssClasses="col-4" ColorScheme="ColorScheme.Light" />
+
+    <VilmaCard Title="Standard card title" Subtitle="Card subtitle" Header="Header"
+               Body="Some quick example text to buld on the card title and make up the bulk of card's content."
+               CssClasses="col-4" ColorScheme="ColorScheme.Dark" />
+
+</div>
+
+@code {
+
+}

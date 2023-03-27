@@ -1,7 +1,7 @@
 ﻿@inject VilmaToastService _toastService
 
 <button type="button" @onclick="@(() => _toastService.AddToast($"Test alert {_alertCtr++}"))">Add alert standard</button>
-<button type="button" @onclick="@(() => _toastService.AddToast($"Test alert {_alertCtr++}", colorScheme: ComponentStyle.Warning))">Add alert Warning</button>
+<button type="button" @onclick="@(() => _toastService.AddToast($"Test alert {_alertCtr++}", colorScheme: ColorScheme.Warning))">Add alert Warning</button>
 <button type="button" @onclick="AddAlertRenderFragment">Add alert Render fragment</button>
 <button type="button" @onclick="AddAlertHeaderRenderFragment">Add alert header Render fragment</button>
 
@@ -17,7 +17,7 @@
                 <p><strong>Test value @_alertCtr</strong></p>
                 <p>Dinamically set content</p>
             },
-            ColorScheme = ComponentStyle.Success,
+            ColorScheme = ColorScheme.Success,
             ShowCloseButton = true,
             Autohide = false
         };
@@ -40,7 +40,7 @@
                 <strong class="me-auto">Dynamic Header</strong>
                 <small class="text-muted">just now</small>
             },
-            ColorScheme = ComponentStyle.None,
+            ColorScheme = ColorScheme.None,
             ShowCloseButton = true,
         };
 

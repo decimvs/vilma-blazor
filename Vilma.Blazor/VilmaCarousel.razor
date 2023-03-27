@@ -1,0 +1,188 @@
+﻿@inject IJSRuntime _jsRuntime
+@inherits VilmaBasicComponent
+
+<div id="@Id" class="@_carouselCss" @attributes="@_carouselAttrs" @ref="@_carouselRef">
+    @if (ShowIndicators)
+    {
+        <div class="carousel-indicators">
+            @for (int i = 0; i < _children.Count; i++)
+            {
+                string indicatorClass = "";
+
+                if (_children[i].Active)
+                {
+                    indicatorClass = _indicator.ToString();   
+                }
+
+                <button type="button" class="@indicatorClass" data-bs-target="@($"#{Id}")" data-bs-slide-to="@i" aria-label="@($"Slide {i}")"></button>
+            }
+        </div>
+    }
+    <div class="carousel-inner">
+        <CascadingValue Value="this">
+            @Slides
+        </CascadingValue>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="@($"#{Id}")" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previus</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="@($"#{Id}")" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+@code {
+    [Parameter] public string Id { get; set; } = Guid.NewGuid().ToString();
+
+    [Parameter] public RenderFragment? Slides { get; set; }
+
+    [Parameter] public string? CssClasses { get; set; }
+
+    [Parameter] public bool ShowIndicators { get; set; }
+
+    [Parameter] public bool FadeTransition { get; set; }
+
+    [Parameter] public bool Autoplay { get; set; }
+
+    /// <summary>
+    /// Fires immediately when the slide starts the change transition
+    /// </summary>
+    [Parameter] public EventCallback<SlideEventArgs> SlideStartedTransition {get; set;}
+
+    /// <summary>
+    /// Fires when the change transition has finished completely
+    /// </summary>
+    [Parameter] public EventCallback<SlideEventArgs> SlideFinishedTransition { get; set; }
+
+    private List<VilmaCarouselSlide> _children = new List<VilmaCarouselSlide>();
+    private CssClassCollection _carouselCss = new CssClassCollection();
+    private CssClassCollection _indicator = new CssClassCollection("active");
+    private Dictionary<string, object> _carouselAttrs = new Dictionary<string, object>();
+    private ElementReference _carouselRef;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _carouselAttrs.Clear();
+        _carouselCss.Clear();
+        _carouselCss.AddClasses("carousel slide");
+        _carouselCss.AddClasses(CssClasses);
+
+        if (FadeTransition)
+            _carouselCss.Add("carousel-fade");
+
+        _carouselAttrs.Add("data-bs-theme", GetColorMode());
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (firstRender)
+        {
+            try
+            {
+                var dotnetref = DotNetObjectReference.Create(this);
+                _jsRuntime.InvokeVoidAsync("VilmaBlazor.initCarousel", _carouselRef, dotnetref, Autoplay);
+            }
+            catch { }
+        }
+    }
+
+    internal void AddChildren(VilmaCarouselSlide child)
+    {
+        if (!_children.Contains(child))
+        {
+            _children.Add(child);
+            StateHasChanged();
+        }            
+    }
+
+    /// <summary>
+    /// Cycles the carousel to the next item
+    /// </summary>
+    public void NextSlide()
+    {
+        try
+        {
+            _jsRuntime.InvokeVoidAsync("VilmaBlazor.carouselNext", _carouselRef);
+        }
+        catch { }
+    }
+
+    /// <summary>
+    /// Cycles the carousel to the previus item
+    /// </summary>
+    public void PreviusSlide()
+    {
+        try
+        {
+            _jsRuntime.InvokeVoidAsync("VilmaBlazor.carouselPrev", _carouselRef);
+        }
+        catch { }
+    }
+
+    /// <summary>
+    /// Starts cycling through the carousel items from left to right
+    /// </summary>
+    public void StartCycle()
+    {
+        try
+        {
+            _jsRuntime.InvokeVoidAsync("VilmaBlazor.carouselCycle", _carouselRef);
+        }
+        catch { }
+    }
+
+    /// <summary>
+    /// Cycles the next item only when the page, the carousel or the carousel's
+    /// parent aren't visible.
+    /// </summary>
+    public void NextSlideWhenVisible()
+    {
+        try
+        {
+            _jsRuntime.InvokeVoidAsync("VilmaBlazor.carouselNextWhenVisible", _carouselRef);
+        }
+        catch { }
+    }
+
+    /// <summary>
+    /// Stops the carousel from cycling through items.
+    /// </summary>
+    public void PauseCycle()
+    {
+        try
+        {
+            _jsRuntime.InvokeVoidAsync("VilmaBlazor.carouselPause", _carouselRef);
+        }
+        catch { }
+    }
+
+    /// <summary>
+    /// Cycles the carousel to a particular frame (index is 0 based).
+    /// </summary>
+    public void ShowSlide(int index)
+    {
+        try
+        {
+            _jsRuntime.InvokeVoidAsync("VilmaBlazor.carouselTo", _carouselRef, index);
+        }
+        catch { }
+    }
+
+    [JSInvokable("OnItemSlid")]
+    public void OnItemSlid(SlideEventArgs eventData)
+    {
+        SlideFinishedTransition.InvokeAsync(eventData);
+    }
+
+    [JSInvokable("OnItemSlide")]
+    public void OnItemSlide(SlideEventArgs eventData)
+    {
+        SlideStartedTransition.InvokeAsync(eventData);
+    }
+}

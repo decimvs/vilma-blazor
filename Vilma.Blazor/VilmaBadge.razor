@@ -1,0 +1,56 @@
+﻿@inherits VilmaBasicComponent
+
+<span class="@_badgeCss">
+    @if(BodyTemplate != null)
+    {
+        @BodyTemplate
+    }
+    else
+    {
+        @Content
+    }
+</span>
+
+@code {
+    /// <summary>
+    /// Gets or sets the text content of the badge. If you want to use HTML or other components
+    /// use BodyTemplate property instead.
+    /// </summary>
+    [Parameter] public string? Content { get; set; }
+
+    /// <summary>
+    /// Gets or sets the content of the badge defined by pure HTML or other components.
+    /// </summary>
+    [Parameter] public RenderFragment? BodyTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets this component style.
+    /// </summary>
+    [Parameter] public ColorScheme ColorScheme { get; set; } = ColorScheme.None;
+
+    /// <summary>
+    /// Gets or sets additional CSS classes to the badge.
+    /// </summary>
+    [Parameter] public string? CssClasses { get; set; }
+
+    /// <summary>
+    /// Show the badge more rounded with a larger border radius. Default is false.
+    /// </summary>
+    [Parameter] public bool RoundedPill { get; set; } = false;
+
+    private CssClassCollection _badgeCss = new CssClassCollection();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _badgeCss.Clear();
+        _badgeCss.Add("badge");
+        _badgeCss.Add(ColorScheme.GetTextBgClass());
+
+        if (RoundedPill)
+            _badgeCss.Add("rounded-pill");
+
+        _badgeCss.AddClasses(CssClasses);
+    }
+}

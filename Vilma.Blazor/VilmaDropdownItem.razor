@@ -1,0 +1,37 @@
+﻿
+<li>
+    <a class="@_cssClasses" href="@Href">
+        @if(TextTemplate != null)
+        {
+            @TextTemplate
+        }
+        else
+        {
+            @Text
+        }
+    </a>
+</li>
+
+@code {
+    [Parameter] public string Href { get; set; } = "";
+
+    [Parameter] public string Text { get; set; } = "";
+
+    [Parameter] public RenderFragment? TextTemplate { get; set; }
+
+    [Parameter] public bool Disabled { get; set; }
+
+    private CssClassCollection _cssClasses = new CssClassCollection();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _cssClasses.Clear();
+
+        _cssClasses.Add("dropdown-item");
+
+        if (Disabled)
+            _cssClasses.Add("disabled");
+    }
+}

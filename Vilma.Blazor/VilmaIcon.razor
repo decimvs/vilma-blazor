@@ -1,0 +1,51 @@
+﻿
+<span class="@_cssClasses">
+    @((MarkupString)_iconMarkup)
+</span>
+
+@code {
+    /// <summary>
+    /// Gets or sets additional CSS classes for the icon.
+    /// </summary>
+    [Parameter] public string? CssClasses { get; set; }
+
+    /// <summary>
+    /// Gets or sets the icon.
+    /// </summary>
+    [Parameter] public Icons Icon { get; set; }
+
+    /// <summary>
+    /// Gets or sets this component style.
+    /// </summary>
+    [Parameter] public ColorScheme ColorScheme { get; set; } = ColorScheme.None;
+
+    /// <summary>
+    /// Gets or sets the icon width.
+    /// </summary>
+    [Parameter] public int IconWidth { get; set; } = 16;
+
+    /// <summary>
+    /// Gets or sets the icon heigth.
+    /// </summary>
+    [Parameter] public int IconHeight { get; set; } = 16;
+
+    private string _iconMarkup = "";
+    private CssClassCollection _cssClasses = new CssClassCollection();
+
+    protected override void OnParametersSet()
+    {
+        string? scheme = null;
+
+        if (ColorScheme != ColorScheme.None)
+        {
+            scheme = ColorScheme.GetTextClass();
+        }
+
+        _iconMarkup = Icon.GetIconSvg(IconWidth, IconHeight, scheme);
+
+        _cssClasses.Clear();
+        _cssClasses.AddClasses(CssClasses);
+
+        base.OnParametersSet();
+    }
+}

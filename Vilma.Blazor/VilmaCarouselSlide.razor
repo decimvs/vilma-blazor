@@ -1,0 +1,65 @@
+﻿<div class="@_itemCss" data-bs-interval="@SlideInterval">
+    <img src="@ImageUrl" class="@_imgCss" alt="@ImageAlt" />
+    @if (Caption != null)
+    {
+        <div class="@_captionCss">
+            @Caption
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>
+    /// Gets or sets the image url.
+    /// </summary>
+    [Parameter] public string ImageUrl { get; set; } = "";
+
+    /// <summary>
+    /// Gets or sets the alt property for the image.
+    /// </summary>
+    [Parameter] public string? ImageAlt { get; set; }
+
+    /// <summary>
+    /// Sets this item as active
+    /// </summary>
+    [Parameter] public bool Active { get; set; }
+
+    [Parameter] public string? ImageCssClasses { get; set; }
+
+    [Parameter] public RenderFragment? Caption { get; set; }
+
+    [Parameter] public string? CaptionCssClasses { get; set; }
+
+    [Parameter] public int SlideInterval { get; set; } = 5000;
+
+    [CascadingParameter] internal VilmaCarousel? Parent { get; set; }
+
+    private CssClassCollection _itemCss = new CssClassCollection();
+    private CssClassCollection _imgCss = new CssClassCollection();
+    private CssClassCollection _captionCss = new CssClassCollection();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _itemCss.Clear();
+        _imgCss.Clear();
+        _captionCss.Clear();
+
+        _itemCss.Add("carousel-item");
+
+        if (Active)
+            _itemCss.Add("active");
+
+        _imgCss.Add("d-block");
+        _imgCss.AddClasses(ImageCssClasses);
+
+        _captionCss.Add("carousel-caption");
+        _captionCss.AddClasses(CaptionCssClasses);
+
+        if (Parent != null)
+        {
+            Parent.AddChildren(this);
+        }
+    }
+}

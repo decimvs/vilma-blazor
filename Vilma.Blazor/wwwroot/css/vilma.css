@@ -1,1 +1,7 @@
 ﻿@import "bootstrap.min.css";
+
+.vm-btn-unstyled {
+    background-color: transparent;
+    border-width: 0;
+    padding: 0;
+}
