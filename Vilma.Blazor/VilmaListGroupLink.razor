@@ -1,0 +1,23 @@
+﻿@inherits VilmaListGroupItem
+
+<a href="@Href" class="@_cssClasses" >
+    @if (ContentTemplate != null)
+    {
+        @ContentTemplate
+    }
+    else
+    {
+        @Content
+    }
+</a>
+
+@code {
+    [Parameter] public string Href { get; set; } = "";
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _cssClasses.Add("list-group-item-action");
+    }
+}

@@ -1,0 +1,117 @@
+﻿<h3>List group</h3>
+
+<div class="hstack gap-3 mt-3">
+    <VilmaListGroup CssClasses="col-3">
+        <Items>
+            <VilmaListGroupText Content="Item 1" />
+            <VilmaListGroupText Content="Item 2 active" Active="true" />
+            <VilmaListGroupText Content="Item 3" />
+            <VilmaListGroupText Content="Item 4 disabled" Disabled="true" />
+        </Items>
+    </VilmaListGroup>
+</div>
+
+<div class="hstack gap-3 mt-3">
+    <VilmaListGroup CssClasses="col-3">
+        <Items>
+            <VilmaListGroupLink Content="Link 1" />
+            <VilmaListGroupLink Content="Link 2 active" Active="true" />
+            <VilmaListGroupLink Content="Link 3" />
+            <VilmaListGroupLink Content="Link 4 disabled" Disabled="true" />
+        </Items>
+    </VilmaListGroup>
+</div>
+
+<div class="hstack gap-3 mt-3">
+    <VilmaListGroup CssClasses="col-3" Flush="true">
+        <Items>
+            <VilmaListGroupLink Content="Flush 1" />
+            <VilmaListGroupLink Content="Flush 2 active" Active="true" />
+            <VilmaListGroupLink Content="Flush 3" />
+            <VilmaListGroupLink Content="Flush 4 disabled" Disabled="true" />
+        </Items>
+    </VilmaListGroup>
+</div>
+
+<div class="hstack gap-3 mt-3">
+    <VilmaListGroup CssClasses="col-3" NumberedList="true">
+        <Items>
+            <VilmaListGroupLink Content="Numbered 1" />
+            <VilmaListGroupLink Content="Numbered 2 active" Active="true" />
+            <VilmaListGroupLink Content="Numbered 3" />
+            <VilmaListGroupLink Content="Numbered 4 disabled" Disabled="true" />
+        </Items>
+    </VilmaListGroup>
+</div>
+
+<div class="hstack gap-3 mt-3">
+    <VilmaListGroup CssClasses="col-3" NumberedList="true">
+        <Items>
+            <VilmaListGroupText CssClasses="d-flex justify-content-between align-items-start">
+                <ContentTemplate>
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">Subheading</div>
+                        Content for list item
+                    </div>
+                    <span class="badge bg-primary rounded-pill">14</span>
+                </ContentTemplate>
+            </VilmaListGroupText>
+            <VilmaListGroupText CssClasses="d-flex justify-content-between align-items-start">
+                <ContentTemplate>
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">Subheading</div>
+                        Content for list item
+                    </div>
+                    <span class="badge bg-primary rounded-pill">14</span>
+
+                </ContentTemplate>
+            </VilmaListGroupText>
+            <VilmaListGroupText CssClasses="d-flex justify-content-between align-items-start">
+                <ContentTemplate>
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">Subheading</div>
+                        Content for list item
+                    </div>
+                    <span class="badge bg-primary rounded-pill">14</span>
+
+                </ContentTemplate>
+            </VilmaListGroupText>
+        </Items>
+    </VilmaListGroup>
+</div>
+
+<div class="hstack gap-3 mt-3">
+    <VilmaListGroup CssClasses="col-3">
+        <Items>
+            <VilmaListGroupText Content="Default" />
+            <VilmaListGroupText Content="Primary" ColorScheme="ColorScheme.Primary" />
+            <VilmaListGroupText Content="Secondary" ColorScheme="ColorScheme.Secondary" />
+            <VilmaListGroupText Content="Success" ColorScheme="ColorScheme.Success" />
+            <VilmaListGroupText Content="Danger" ColorScheme="ColorScheme.Danger" />
+            <VilmaListGroupText Content="Warning" ColorScheme="ColorScheme.Warning" />
+            <VilmaListGroupText Content="Info" ColorScheme="ColorScheme.Info" />
+            <VilmaListGroupText Content="Light" ColorScheme="ColorScheme.Light" />
+            <VilmaListGroupText Content="Dark" ColorScheme="ColorScheme.Dark" />
+        </Items>
+    </VilmaListGroup>
+</div>
+
+<div class="hstack gap-3 mt-3">
+    <VilmaListGroup CssClasses="col-3">
+        <Items>
+            <VilmaListGroupLink Content="Link Default" />
+            <VilmaListGroupLink Content="Link Primary" ColorScheme="ColorScheme.Primary" />
+            <VilmaListGroupLink Content="Link Secondary" ColorScheme="ColorScheme.Secondary" />
+            <VilmaListGroupLink Content="Link Success" ColorScheme="ColorScheme.Success" />
+            <VilmaListGroupLink Content="Link Danger" ColorScheme="ColorScheme.Danger" />
+            <VilmaListGroupLink Content="Link Warning" ColorScheme="ColorScheme.Warning" />
+            <VilmaListGroupLink Content="Link Info" ColorScheme="ColorScheme.Info" />
+            <VilmaListGroupLink Content="Link Light" ColorScheme="ColorScheme.Light" />
+            <VilmaListGroupLink Content="Link Dark" ColorScheme="ColorScheme.Dark" />
+        </Items>
+    </VilmaListGroup>
+</div>
+
+@code {
+
+}

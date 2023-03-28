@@ -1,0 +1,42 @@
+﻿<form @attributes="@_attributes">
+    @FormTemplate
+</form>
+
+@code {
+    /// <summary>
+    /// Gets or sets the form content as HTML or Blazor markup.
+    /// </summary>
+    [Parameter] public RenderFragment FormTemplate { get; set; } = @<p>&nbsp;</p>;
+
+    /// <summary>
+    /// Gets or sets additional css classes to the form.
+    /// </summary>
+    [Parameter] public string? CssClasses { get; set; }
+
+    /// <summary>
+    /// Sets the form's action
+    /// </summary>
+    [Parameter] public string? Action { get; set; }
+
+    /// <summary>
+    /// Sets the form's method. Default is "post";
+    /// </summary>
+    [Parameter] public string Method { get; set; } = "post";
+
+    private Dictionary<string, object> _attributes = new Dictionary<string, object>();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _attributes.Clear();
+
+        if (CssClasses != null)
+            _attributes.Add("class", CssClasses);
+
+        if (Action != null)
+            _attributes.Add("action", Action);
+
+        _attributes.Add("method", Method);
+    }
+}

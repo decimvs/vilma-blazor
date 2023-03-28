@@ -8,6 +8,9 @@
 </div>
 
 @code {
+    /// <summary>
+    /// Gets or sets the items of the button group.
+    /// </summary>
     [Parameter] public RenderFragment? Buttons { get; set; }
 
     /// <summary>
@@ -17,12 +20,24 @@
     /// </summary>
     [Parameter] public bool ShowVertical { get; set; }
 
+    /// <summary>
+    /// Gets or sets the aria-label of the button group.
+    /// </summary>
     [Parameter] public string AriaLabel { get; set; } = "";
 
+    /// <summary>
+    /// Gets or sets additional css classes.
+    /// </summary>
     [Parameter] public string? CssClasses { get; set; }
 
+    /// <summary>
+    /// Disables the button group
+    /// </summary>
     [Parameter] public bool IsDisabled { get; set; }
 
+    /// <summary>
+    /// Gets or sets the group name.
+    /// </summary>
     [Parameter] public string GroupName { get; set; } = DateTime.Now.Ticks.ToString("x");
 
     private CssClassCollection _cssClasses = new CssClassCollection();

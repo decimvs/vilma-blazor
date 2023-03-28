@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Vilma.Blazor.Internal
 {
-    public abstract class VilmaGroupableComponent : ComponentBase
+    public abstract class VilmaGroupableComponent : VilmaBasicComponent
     {
         [CascadingParameter] internal object? Parent { get; set; }
 

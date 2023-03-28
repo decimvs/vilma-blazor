@@ -123,6 +123,34 @@
     </VilmaButtonGroup>
 </div>
 
+<div class="hstack gap-3 mt-3">
+    <VilmaButtonGroup>
+        <Buttons>
+            <VilmaButton Content="Splitted button" ColorScheme="ColorScheme.Primary" />
+            <VilmaDropdown Text="Custom offset" ColorScheme="ColorScheme.Primary" MenuOffset="@((20,20))">
+                <Items>
+                    <VilmaDropdownHeader Text="Header" />
+                    <VilmaDropdownLink Href="#" Text="Item 1" />
+                    <VilmaDropdownLink Href="#" Text="Item 2" />
+                    <VilmaDropdownDivider />
+                    <VilmaDropdownLink Href="#" Text="Disabled" Disabled="true" />
+                    <VilmaDropdownLink Href="#" Text="Item 4" />
+                    <VilmaDropdownDivider />
+                    <VilmaDropdownText Text="This is an item with only text" />
+                    <VilmaDropdownForm CssClasses="px-4 py-3">
+                        <FormTemplate>
+                            <div class="mb-3">
+                                <label for="exampleDropdownFormEmail1" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="email@example.com">
+                            </div>
+                        </FormTemplate>
+                    </VilmaDropdownForm>
+                </Items>
+            </VilmaDropdown>
+        </Buttons>
+    </VilmaButtonGroup>
+</div>
+
 @code {
     private VilmaButton? _btn1;
     private string _status = "Unknown";

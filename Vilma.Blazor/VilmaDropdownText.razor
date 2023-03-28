@@ -1,21 +1,19 @@
-﻿<li>
-    <div class="dropdown-header">
-        @if (TextTemplate != null)
-        {
-            @TextTemplate
-        }
-        else
-        {
-            <h6 class="@_cssClasses">@Text</h6>
-        }
-    </div>
-</li>
+﻿<p class="@_cssClasses">
+    @if (TextTemplate != null)
+    {
+        @TextTemplate
+    }
+    else
+    {
+        @Text
+    }
+</p>
 
 @code {
     /// <summary>
     /// Gets or sets the text.
     /// </summary>
-    [Parameter] public string? Text { get; set; }
+    [Parameter] public string Text { get; set; } = "";
 
     /// <summary>
     /// Gets or sets the text content as HTML or Blazor markup.
@@ -31,9 +29,8 @@
 
     protected override void OnParametersSet()
     {
-        base.OnParametersSet();
-
         _cssClasses.Clear();
+
         _cssClasses.AddClasses(CssClasses);
     }
 }

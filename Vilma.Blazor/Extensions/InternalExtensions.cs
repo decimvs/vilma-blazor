@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,6 +71,38 @@ namespace Vilma.Blazor
                     return "btn-light";
                 case ColorScheme.Link:
                     return "btn-link";
+                case ColorScheme.None:
+                default:
+                    return "";
+            }
+        }
+
+        /// <summary>
+        /// Returns the group list class associated to the ColorScheme
+        /// </summary>
+        /// <param name="style"></param>
+        /// <returns></returns>
+        public static string GetGroupListClass(this ColorScheme style)
+        {
+            switch (style)
+            {
+                case ColorScheme.Danger:
+                    return "list-group-item-danger";
+                case ColorScheme.Warning:
+                    return "list-group-item-warning";
+                case ColorScheme.Dark:
+                    return "list-group-item-dark";
+                case ColorScheme.Primary:
+                    return "list-group-item-primary";
+                case ColorScheme.Secondary:
+                    return "list-group-item-secondary";
+                case ColorScheme.Success:
+                    return "list-group-item-success";
+                case ColorScheme.Info:
+                    return "list-group-item-info";
+                case ColorScheme.Light:
+                    return "list-group-item-light";
+                case ColorScheme.Link:
                 case ColorScheme.None:
                 default:
                     return "";
@@ -227,7 +260,7 @@ namespace Vilma.Blazor
 
         #endregion
 
-        #region DropdownDirections
+        #region Dropdown
 
         /// <summary>
         /// Returns the css class associated with the DropdownDirections constant passed.
@@ -255,6 +288,99 @@ namespace Vilma.Blazor
             }
         }
 
+        /// <summary>
+        /// Returns the config value needed for the auto close behavior of the
+        /// dropdown.
+        /// </summary>
+        /// <param name="autoClose"></param>
+        /// <returns></returns>
+        internal static string GetAutoCloseValue (this DropdownAutoClose autoClose)
+        {
+            switch (autoClose)
+            {
+                case DropdownAutoClose.Default:
+                default:
+                    return "true";
+                case DropdownAutoClose.Manual:
+                    return "false";
+                case DropdownAutoClose.ClickableInside:
+                    return "inside";
+                case DropdownAutoClose.ClickableOutside:
+                    return "outside";
+            }
+        }
+
         #endregion
+
+        #region InputTypes
+
+        /// <summary>
+        /// Returns the css class for the input type
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        internal static string GetInputTypeClass(this InputTypes type)
+        {
+            switch (type)
+            {
+                case InputTypes.Text:
+                case InputTypes.Password:
+                case InputTypes.Color:
+                case InputTypes.Date:
+                case InputTypes.DateTimeLocal:
+                case InputTypes.Email:
+                case InputTypes.File:
+                case InputTypes.Month:
+                case InputTypes.Number:
+                case InputTypes.Tel:
+                case InputTypes.Time:
+                case InputTypes.Url:
+                case InputTypes.Week:
+                default:
+                    return "form-control";
+            }
+        }
+
+        /// <summary>
+        /// Returns the input type text for use in <input/> tag.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        internal static string GetInputTypeText(this InputTypes type)
+        {
+            switch (type)
+            {
+                case InputTypes.Text:
+                default:
+                    return "text";
+                case InputTypes.Password:
+                    return "password";
+                case InputTypes.Color:
+                    return "color";
+                case InputTypes.Date:
+                    return "date";
+                case InputTypes.DateTimeLocal:
+                    return "datetime-local";
+                case InputTypes.Email:
+                    return "email";
+                case InputTypes.File:
+                    return "file";
+                case InputTypes.Month:
+                    return "month";
+                case InputTypes.Number:
+                    return "number";
+                case InputTypes.Tel:
+                    return "tel";
+                case InputTypes.Time:
+                    return "time";
+                case InputTypes.Url:
+                    return "url";
+                case InputTypes.Week:
+                    return "week";
+            }
+        }
+
+        #endregion
+
     }
 }

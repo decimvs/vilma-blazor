@@ -1,0 +1,33 @@
+﻿@inherits VilmaFormControl
+
+<label for="@InputId" class="@_labelCss">
+    @if (LabelTemplate != null)
+    {
+        @LabelTemplate
+    }
+    else
+    {
+        @Label
+    }
+</label>
+<input type="@InputType.GetInputTypeText()" placeholder="@Placeholder" class="_inputCss" />
+
+@code {
+    [Parameter] public InputTypes InputType { get; set; } = InputTypes.Text;
+
+    private CssClassCollection _labelCss = new CssClassCollection();
+    private CssClassCollection _inputCss = new CssClassCollection();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _labelCss.Clear();
+        _labelCss.Add("form-label");
+        _labelCss.AddClasses(LabelCssClasses);
+
+        _inputCss.Clear();
+        _inputCss.Add(InputType.GetInputTypeClass());
+        _inputCss.AddClasses(InputCssClasses);
+    }
+}

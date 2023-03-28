@@ -1,0 +1,16 @@
+﻿@inherits VilmaListGroupItem
+
+<li class="@_cssClasses">
+    @if (ContentTemplate != null)
+    {
+        @ContentTemplate
+    }
+    else
+    {
+        @Content
+    }
+</li>
+
+@code {
+    
+}

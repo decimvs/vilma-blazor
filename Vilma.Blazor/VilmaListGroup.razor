@@ -1,0 +1,31 @@
+﻿<ul class="@_cssClasses">
+    @Items
+</ul>
+
+@code {
+    [Parameter] public bool NumberedList { get; set; }
+
+    [Parameter] public RenderFragment Items { get; set; } =@<p>&nbsp;</p>;
+
+    [Parameter] public string? CssClasses { get; set; }
+
+    [Parameter] public bool Flush { get; set; }
+
+    private CssClassCollection _cssClasses = new CssClassCollection();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _cssClasses.Clear();
+        _cssClasses.Add("list-group");
+
+        if (NumberedList)
+            _cssClasses.Add("list-group-numbered");
+
+        if (Flush)
+            _cssClasses.Add("list-group-flush");
+
+        _cssClasses.AddClasses(CssClasses);
+    }
+}
