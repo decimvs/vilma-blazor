@@ -1,5 +1,12 @@
 ﻿@code {
     /// <summary>
+    /// Captures all the unmatched tags written by user. All this tags will be rendered in
+    /// the container element of each component
+    /// </summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object> Attributes { get; set; }
+
+    /// <summary>
     /// Gets or sets the color mode for this component. The defaul 
     /// color mode is Light.
     /// </summary>
@@ -12,5 +19,25 @@
     protected string GetColorMode()
     {
         return ColorMode.ToString().ToLower();
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (Attributes != null)
+        {
+            if (Attributes.ContainsKey("class"))
+                Attributes.Remove("class");
+        }
+    }
+
+    protected void TryAddAttribute(string key, object value)
+    {
+        if (Attributes == null)
+            Attributes = new Dictionary<string, object>();
+
+        if (Attributes.ContainsKey(key))
+            Attributes[key] = value;
+        else
+            Attributes.Add(key, value);
     }
 }

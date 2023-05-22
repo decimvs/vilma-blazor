@@ -1,0 +1,173 @@
+﻿@inject VilmaJSInterop _vjsInterop
+@inherits VilmaBasicComponent
+
+<div id="@ModalId" class="@_modalClasses" tabindex="-1" @ref="@_elmReference" @attributes="@Attributes">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @if (HeaderTemplate == null)
+            {
+                <div class="@_headerClasses">
+                    <h1 class="modal-title fs-5">@HeaderText</h1>
+
+                    @if (ShowHeaderCloseButton)
+                    {
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    }
+                </div>
+            }
+            else
+            {
+                @HeaderTemplate
+            }
+
+            @if (BodyTemplate == null)
+            {
+                <div class="@_bodyClasses">
+                    @BodyText
+                </div>
+            }
+            else
+            {
+                @BodyTemplate
+            }
+            
+            @if (FooterTemplate == null)
+            {
+                <div class="@_footerClasses">
+                    @FooterText
+                </div>
+            }
+            else
+            {
+                @FooterTemplate
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    /// <summary>
+    /// Id of the modal
+    /// </summary>
+    [Parameter] public string ModalId { get; set; } = DateTime.Now.Ticks.ToString("x");
+
+    /// <summary>
+    /// Modal header text (title)
+    /// </summary>
+    [Parameter] public string? HeaderText { get; set; }
+
+    /// <summary>
+    /// Modal body text
+    /// </summary>
+
+    [Parameter] public string? BodyText { get; set; }
+
+    /// <summary>
+    /// Modal footer text
+    /// </summary>
+
+    [Parameter] public string? FooterText { get; set; }
+
+    /// <summary>
+    /// Modal css classes
+    /// </summary>
+
+    [Parameter] public string? CssClasses { get; set; }
+
+    /// <summary>
+    /// Header css classes
+    /// </summary>
+
+    [Parameter] public string? CssHeaderClasses { get; set; }
+
+    /// <summary>
+    /// Body css classes
+    /// </summary>
+    [Parameter] public string? CssBodyClasses { get; set; }
+
+    /// <summary>
+    /// Footer css classes
+    /// </summary>
+    [Parameter] public string? CssFooterClasses { get; set; }
+
+    /// <summary>
+    /// Shows a close button in the header, only if header text is defined.
+    /// If you define a header template this option has not effect.
+    /// Default: true.
+    /// </summary>
+    [Parameter] public bool ShowHeaderCloseButton { get; set; } = true;
+
+    /// <summary>
+    /// Sets the header elements to be rendered
+    /// </summary>
+    [Parameter] public RenderFragment? HeaderTemplate { get; set; }
+
+    /// <summary>
+    /// Sets the body elements to be rendered
+    /// </summary>
+    [Parameter] public RenderFragment? BodyTemplate { get; set; }
+
+    /// <summary>
+    /// Sets the footer elements to be rendered
+    /// </summary>
+    [Parameter] public RenderFragment? FooterTemplate { get; set; }
+
+    /// <summary>
+    /// Sets backdrop as static -> true.
+    /// Default: false.
+    /// </summary>
+    [Parameter] public bool StaticBackdrop { get; set; } = false;
+
+    /// <summary>
+    /// Enables the scrolling of the body instead of the overall modal window.
+    /// Modal's default behavior for large contents is to scroll the overall modal.
+    /// You can change this behavior by setting this parameter to true, allowing
+    /// only the body to scroll.
+    /// </summary>
+    [Parameter] public bool SetBodyScrollable { get; set; } = false;
+
+
+    private ElementReference _elmReference;
+    private CssClassCollection _modalClasses = new();
+    private CssClassCollection _headerClasses = new();
+    private CssClassCollection _bodyClasses = new();
+    private CssClassCollection _footerClasses = new();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (BodyText == null && BodyTemplate == null)
+            throw new ArgumentException("In order to correctly render the component at least the body text or body template should be defined.");
+
+        _modalClasses.Clear();
+        _headerClasses.Clear();
+        _bodyClasses.Clear();
+        _footerClasses.Clear();
+
+        _modalClasses.AddClasses("modal fade");
+        _modalClasses.AddClasses(CssClasses);
+
+        if (SetBodyScrollable)
+            _modalClasses.Add("modal-dialog-scrollable");
+
+        _headerClasses.Add("modal-header");
+        _headerClasses.AddClasses(CssHeaderClasses);
+
+        _bodyClasses.Add("modal-body");
+        _bodyClasses.AddClasses(CssBodyClasses);
+
+        _footerClasses.Add("modal-footer");
+        _footerClasses.AddClasses(CssFooterClasses);
+
+        if (StaticBackdrop)
+        {
+            TryAddAttribute("data-bs-backdrop", "static");
+        }
+    }
+
+    public async void Show()
+    {
+        await _vjsInterop.ModalShow(_elmReference);
+    }
+}

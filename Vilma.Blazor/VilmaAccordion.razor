@@ -1,5 +1,4 @@
-﻿@inject IJSRuntime _jsRuntime
-@inherits VilmaBasicComponent
+﻿@inherits VilmaBasicComponent
 
 <div class="@_accordionCss" @ref=_accordionElm id="@AccordionGuid" data-bs-theme="@GetColorMode()">
     <CascadingValue Value="this">
@@ -41,20 +40,5 @@
             _accordionCss.Add("accordion-flush");
 
         _accordionCss.AddClasses(CssClasses);
-    }
-
-    protected override async void OnAfterRender(bool firstRender)
-    {
-        base.OnAfterRender(firstRender);
-
-        if (firstRender)
-        {
-            try
-            {
-                var dnReference = DotNetObjectReference.Create(this);
-                await _jsRuntime.InvokeVoidAsync("VilmaBlazor.enableAccordions", dnReference, _accordionElm);
-            }
-            catch { }
-        }
     }
 }

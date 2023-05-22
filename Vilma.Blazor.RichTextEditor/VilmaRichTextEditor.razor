@@ -1,0 +1,19 @@
+﻿@inject IJSRuntime _jsruntime
+
+<textarea id="editor">Test</textarea>
+
+@code {
+    private Lazy<Task<IJSObjectReference>> moduleTask;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await _jsruntime.InvokeVoidAsync("import", "./_content/Vilma.Blazor.RichTextEditor/tinymce/tinymce.min.js");
+        moduleTask = new(() => _jsruntime.InvokeAsync<IJSObjectReference>("import", "./_content/Vilma.Blazor.RichTextEditor/VilmaRichTextEditor.js").AsTask());
+
+        var configuration = new InternalEditorConfiguration("#editor", "./_content/Vilma.Blazor.RichTextEditor/tinymce");
+        configuration.Skin = "oxide-dark";
+
+        var module = await moduleTask.Value;
+        await module.InvokeVoidAsync("initEditor", configuration);
+    }
+}

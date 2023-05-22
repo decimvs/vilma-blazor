@@ -14,6 +14,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución",
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vilma.Blazor.RichTextEditor", "Vilma.Blazor.RichTextEditor\Vilma.Blazor.RichTextEditor.csproj", "{C6E59F6C-CD41-4FF7-98FE-A04B1230EAED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vilma.Blazor.MediaManager", "Vilma.Blazor.MediaManager\Vilma.Blazor.MediaManager.csproj", "{BAF5CF07-EE51-42C8-8D0D-A285635FB8BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +32,14 @@ Global
 		{57589DF0-FC56-4532-9964-A81535D1E2D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57589DF0-FC56-4532-9964-A81535D1E2D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57589DF0-FC56-4532-9964-A81535D1E2D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6E59F6C-CD41-4FF7-98FE-A04B1230EAED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6E59F6C-CD41-4FF7-98FE-A04B1230EAED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6E59F6C-CD41-4FF7-98FE-A04B1230EAED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6E59F6C-CD41-4FF7-98FE-A04B1230EAED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAF5CF07-EE51-42C8-8D0D-A285635FB8BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAF5CF07-EE51-42C8-8D0D-A285635FB8BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAF5CF07-EE51-42C8-8D0D-A285635FB8BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAF5CF07-EE51-42C8-8D0D-A285635FB8BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

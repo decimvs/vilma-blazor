@@ -1,4 +1,4 @@
-﻿@inject IJSRuntime _jsRuntime
+﻿@inject VilmaJSInterop _vjsInterop
 @inherits VilmaBasicComponent
 
 @code {
@@ -42,7 +42,7 @@
             try
             {
                 var dnReference = DotNetObjectReference.Create(this);
-                await _jsRuntime.InvokeVoidAsync("VilmaBlazor.setAccordionItemListeners", dnReference, _collapsibleItem);
+                await _vjsInterop.AccordionSetItemListeners(dnReference, _collapsibleItem);
             }
             catch { }
         }
@@ -55,7 +55,7 @@
     {
         try
         {
-            await _jsRuntime.InvokeVoidAsync("VilmaBlazor.accordionToggle", _collapsibleItem);
+            await _vjsInterop.AccordionToggle(_collapsibleItem);
 
             if (SetOpen)
                 SetOpen = false;
@@ -67,7 +67,7 @@
     {
         try
         {
-            await _jsRuntime.InvokeVoidAsync("VilmaBlazor.accordionShow", _collapsibleItem);
+            await _vjsInterop.AccordionShow(_collapsibleItem);
         }
         catch { }
     }
@@ -76,7 +76,7 @@
     {
         try
         {
-            await _jsRuntime.InvokeVoidAsync("VilmaBlazor.accordionHide", _collapsibleItem);
+            await _vjsInterop.AccordionHide(_collapsibleItem);
 
             if (SetOpen)
                 SetOpen = false;

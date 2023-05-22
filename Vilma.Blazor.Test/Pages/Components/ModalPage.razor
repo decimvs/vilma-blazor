@@ -1,0 +1,21 @@
+﻿<h3>ModalPage</h3>
+
+<div class="vstack col-1">
+    <VilmaModal @ref="@_1stModal" BodyText="Modal without header nor footer" />
+
+    <VilmaButton OnClick="@(() => _1stModal.Show())" Content="Show" CssClasses="mb-4" />
+
+    <VilmaModal @ref="@_2ndModal" HeaderText="Modal title" BodyText="Modal body text" FooterText="Modal footer text" style="background-color: #000;" />
+
+    <VilmaButton OnClick="@(() => _2ndModal.Show())" Content="Show" />
+
+    <VilmaModal @ref="@_3rdModal" HeaderText="Modal title" BodyText="Modal body text with static backdrop" FooterText="Modal footer text" StaticBackdrop="true" />
+
+    <VilmaButton OnClick="@(() => _3rdModal.Show())" Content="Show" />
+</div>
+
+@code {
+    private VilmaModal _1stModal;
+    private VilmaModal _2ndModal;
+    private VilmaModal _3rdModal;
+}

@@ -17,6 +17,7 @@ namespace Vilma.Blazor
         public static IServiceCollection AddVilmaBlazorServices(this IServiceCollection services)
         {
             services.AddSingleton<VilmaToastService>();
+            services.AddScoped<VilmaJSInterop>();
 
             return services;
         }
