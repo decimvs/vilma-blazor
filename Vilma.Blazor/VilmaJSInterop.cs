@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Vilma.Blazor.Internal;
 
 namespace Vilma.Blazor
@@ -51,9 +52,29 @@ namespace Vilma.Blazor
 
         #region Modal
 
+        public async Task ModalInit(ElementReference? element, DotNetObjectReference<VilmaModal>? dotnetRef)
+        {
+            await (await GetModule(modalModule)).InvokeVoidAsync("modalInit", element, dotnetRef);
+        }
+
         public async Task ModalShow(ElementReference? element)
         {
             await (await GetModule(modalModule)).InvokeVoidAsync("modalShow", element);
+        }
+
+        public async Task ModalHide(ElementReference? element)
+        {
+            await (await GetModule(modalModule)).InvokeVoidAsync("modalHide", element);
+        }
+
+        public async Task ModalToggle(ElementReference? element)
+        {
+            await (await GetModule(modalModule)).InvokeVoidAsync("modalToggle", element);
+        }
+
+        public async Task ModalHandleUpdate(ElementReference? element)
+        {
+            await (await GetModule(modalModule)).InvokeVoidAsync("handleUpdate", element);
         }
 
         #endregion

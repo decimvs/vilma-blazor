@@ -2,9 +2,9 @@
 @inherits VilmaBasicComponent
 
 <div id="@ModalId" class="@_modalClasses" tabindex="-1" @ref="@_elmReference" @attributes="@Attributes">
-    <div class="modal-dialog">
+    <div class="@_modalDialogClasses">
         <div class="modal-content">
-            @if (HeaderTemplate == null)
+            @if (HeaderText != null)
             {
                 <div class="@_headerClasses">
                     <h1 class="modal-title fs-5">@HeaderText</h1>
@@ -15,9 +15,11 @@
                     }
                 </div>
             }
-            else
+            else if (HeaderTemplate != null)
             {
-                @HeaderTemplate
+                <div class="@_headerClasses">
+                    @HeaderTemplate
+                </div>
             }
 
             @if (BodyTemplate == null)
@@ -28,18 +30,22 @@
             }
             else
             {
-                @BodyTemplate
+                <div class="@_bodyClasses">
+                    @BodyTemplate
+                </div>
             }
             
-            @if (FooterTemplate == null)
+            @if (FooterText != null)
             {
                 <div class="@_footerClasses">
                     @FooterText
                 </div>
             }
-            else
+            else if (FooterTemplate != null)
             {
-                @FooterTemplate
+                <div class="@_footerClasses">
+                    @FooterTemplate
+                </div>
             }
         </div>
     </div>
@@ -126,9 +132,60 @@
     /// </summary>
     [Parameter] public bool SetBodyScrollable { get; set; } = false;
 
+    /// <summary>
+    /// If enabled the modal window is centered vertically.
+    /// Default: false.
+    /// </summary>
+    [Parameter] public bool SetVerticallyCentered { get; set; } = false;
+
+    /// <summary>
+    /// Sets a fade animation when the modal is displayed.
+    /// Default: true.
+    /// </summary>
+    [Parameter] public bool SetFadeAnimation { get; set; } = true;
+
+    /// <summary>
+    /// Sets the modal's size.
+    /// Default is: ModalSizes.Default
+    /// </summary>
+    [Parameter] public ModalSizes ModalSize { get; set; } = ModalSizes.Default;
+
+    /// <summary>
+    /// Sets the modal full screen mode. If this parameter is set the modal will be shown as full screen 
+    /// according to the mode selected. If left null, modal is shown in its normal way.
+    /// Default: null
+    /// </summary>
+    [Parameter] public ModalFullScreenModes? FullScreenMode { get; set; }
+
+    /// <summary>
+    /// Sets the close behavior when the key ESC is pressed. If set to true
+    /// modal closes on ESC key pressed. Set false to disable.
+    /// Default: true
+    /// </summary>
+    [Parameter] public bool CloseOnEscKeyPressed { get; set; } = true;
+
+    /// <summary>
+    /// EventCalback fired after the modal is completely rendered and visible
+    /// to the user.
+    /// </summary>
+    [Parameter] public EventCallback? ModalShown { get; set; }
+
+    //// <summary>
+    /// EventCallback fired after the modal is completely hidden to the
+    /// user.
+    /// </summary>
+    [Parameter] public EventCallback? ModalHidden { get; set; }
+
+    /// <summary>
+    /// EventCallback fired when the StaticBackdrop is set to true or
+    /// CloseOnEscKeyPressed is set to false and user clicks on the backdrop
+    /// backgroud or presses ESC key.   
+    /// </summary>
+    [Parameter] public EventCallback? ModalHidePrevented { get; set; }
 
     private ElementReference _elmReference;
     private CssClassCollection _modalClasses = new();
+    private CssClassCollection _modalDialogClasses = new();
     private CssClassCollection _headerClasses = new();
     private CssClassCollection _bodyClasses = new();
     private CssClassCollection _footerClasses = new();
@@ -137,37 +194,152 @@
     {
         base.OnParametersSet();
 
+        if (string.IsNullOrWhiteSpace(ModalId))
+            throw new ArgumentException("ModalId cannot be null or empty. Please define a value or omit this parameter, it will get a value automatically.");
+
         if (BodyText == null && BodyTemplate == null)
             throw new ArgumentException("In order to correctly render the component at least the body text or body template should be defined.");
 
         _modalClasses.Clear();
+        _modalDialogClasses.Clear();
         _headerClasses.Clear();
         _bodyClasses.Clear();
         _footerClasses.Clear();
 
-        _modalClasses.AddClasses("modal fade");
+        // Set modal classes
+        _modalClasses.Add("modal fade");
         _modalClasses.AddClasses(CssClasses);
 
-        if (SetBodyScrollable)
-            _modalClasses.Add("modal-dialog-scrollable");
+        if (ModalSize == ModalSizes.Small)
+            _modalClasses.Add("modal-sm");
+        else if (ModalSize == ModalSizes.Large)
+            _modalClasses.Add("modal-lg");
+        else if (ModalSize == ModalSizes.ExtraLarge)
+            _modalClasses.Add("modal-xl");
 
+        if (SetFadeAnimation)
+            _modalClasses.Add("fade");
+
+        // Set modal-dialog classes
+        _modalDialogClasses.Add("modal-dialog");
+
+        if (FullScreenMode == null)
+        {
+            if (SetVerticallyCentered)
+                _modalDialogClasses.Add("modal-dialog-centered");
+
+            if (SetBodyScrollable)
+                _modalDialogClasses.Add("modal-dialog-scrollable");
+        }
+        else
+        {
+            switch (FullScreenMode)
+            {
+                case ModalFullScreenModes.Always:
+                    _modalDialogClasses.Add("modal-fullscreen");
+                    break;
+                case ModalFullScreenModes.Small:
+                    _modalDialogClasses.Add("modal-fullscreen-sm-down");
+                    break;
+                case ModalFullScreenModes.Medium:
+                    _modalDialogClasses.Add("modal-fullscreen-md-down");
+                    break;
+                case ModalFullScreenModes.Large:
+                    _modalDialogClasses.Add("modal-fullscreen-lg-down");
+                    break;
+                case ModalFullScreenModes.ExtraLarge:
+                    _modalDialogClasses.Add("modal-fullscreen-xl-down");
+                    break;
+                case ModalFullScreenModes.ExtraExtraLarge:
+                    _modalDialogClasses.Add("modal-fullscreen-xxl-down");
+                    break;
+            }
+        }
+
+        // Set header classes
         _headerClasses.Add("modal-header");
         _headerClasses.AddClasses(CssHeaderClasses);
 
+        //Set body classes
         _bodyClasses.Add("modal-body");
         _bodyClasses.AddClasses(CssBodyClasses);
 
+        // Set footer classes
         _footerClasses.Add("modal-footer");
         _footerClasses.AddClasses(CssFooterClasses);
 
         if (StaticBackdrop)
-        {
             TryAddAttribute("data-bs-backdrop", "static");
-        }
+
+        if (!CloseOnEscKeyPressed)
+            TryAddAttribute("data-bs-keyboard", "false");
+
+        TryAddAttribute("data-bs-theme", GetColorMode());
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var dotnetRef = DotNetObjectReference.Create(this);
+        await _vjsInterop.ModalInit(_elmReference, dotnetRef);
+    }
+
+    /// <summary>
+    /// Shows this modal
+    /// </summary>
     public async void Show()
     {
         await _vjsInterop.ModalShow(_elmReference);
+    }
+
+    /// <summary>
+    /// Hides this modal
+    /// </summary>
+    public async void Hide()
+    {
+        await _vjsInterop.ModalHide(_elmReference);
+    }
+
+    /// <summary>
+    /// Toggle modal's visibility
+    /// </summary>
+    public async void Toggle()
+    {
+        await _vjsInterop.ModalToggle(_elmReference);
+    }
+
+    /// <summary>
+    /// Readjusts the modal's position if the scrollbars appears after a change
+    /// in the modal's height  while it is open.
+    /// </summary>
+    public async void HandleUpdate()
+    {
+        await _vjsInterop.ModalHandleUpdate(_elmReference);
+    }
+
+    /// <summary>
+    /// Fires ModalShown
+    /// </summary>
+    [JSInvokable]
+    public void OnModalShown()
+    {
+        ModalShown?.InvokeAsync();
+    }
+
+    /// <summary>
+    /// Fires ModalHidden
+    /// </summary>
+    [JSInvokable]
+    public void OnModalHidden()
+    {
+        ModalHidden?.InvokeAsync();
+    }
+
+    /// <summary>
+    /// Fires ModalHidePrevented
+    /// </summary>
+    [JSInvokable]
+    public void OnModalHidePrevented()
+    {
+        ModalHidePrevented?.InvokeAsync();
     }
 }

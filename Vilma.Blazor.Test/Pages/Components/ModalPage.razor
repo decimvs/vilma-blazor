@@ -1,21 +1,144 @@
 ﻿<h3>ModalPage</h3>
 
-<div class="vstack col-1">
-    <VilmaModal @ref="@_1stModal" BodyText="Modal without header nor footer" />
+<div class="vstack gap-3">
+    <div class="vstack gap-3 col-2">
+        <VilmaModal @ref="@_1stModal" BodyText="Modal without header nor footer with dark theme" CssBodyClasses="text-white" ColorMode="ColorMode.Dark" />
 
-    <VilmaButton OnClick="@(() => _1stModal.Show())" Content="Show" CssClasses="mb-4" />
+        <VilmaButton OnClick="@(() => _1stModal.Show())" Content="Only body modal" />
 
-    <VilmaModal @ref="@_2ndModal" HeaderText="Modal title" BodyText="Modal body text" FooterText="Modal footer text" style="background-color: #000;" />
+        <VilmaModal @ref="@_2ndModal" HeaderText="Modal title" BodyText="Modal body text" FooterText="Modal footer text" style="background-color: #000;" />
 
-    <VilmaButton OnClick="@(() => _2ndModal.Show())" Content="Show" />
+        <VilmaButton OnClick="@(() => _2ndModal.Show())" Content="Full modal with custom backdrop color" />
 
-    <VilmaModal @ref="@_3rdModal" HeaderText="Modal title" BodyText="Modal body text with static backdrop" FooterText="Modal footer text" StaticBackdrop="true" />
+        <VilmaModal @ref="@_3rdModal" HeaderText="Modal title" BodyText="Modal body text with static backdrop" FooterText="Modal footer text" StaticBackdrop="true" />
 
-    <VilmaButton OnClick="@(() => _3rdModal.Show())" Content="Show" />
+        <VilmaButton OnClick="@(() => _3rdModal.Show())" Content="Static backdrop" />
+
+        <VilmaModal @ref="@_4thModal" HeaderText="Modal title" BodyText="Vertically centered modal" FooterText="Modal footer text" SetVerticallyCentered="true" />
+
+        <VilmaButton OnClick="@(() => _4thModal.Show())" Content="Vertically centered" />
+
+        <VilmaModal @ref="@_5thModal" HeaderText="Modal title" FooterText="Modal footer text" SetVerticallyCentered="true" SetBodyScrollable="true">
+            <BodyTemplate>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus venenatis sodales. Quisque non dolor tortor. Maecenas consectetur urna ac nibh tristique, vel faucibus enim vehicula. In lobortis gravida felis, in molestie purus eleifend tincidunt. Nunc sed semper magna, in auctor quam. Mauris eget turpis quis ipsum pulvinar lacinia. Nunc lacinia dictum aliquam. Donec scelerisque nisl tincidunt, venenatis odio tincidunt, volutpat massa. Praesent sed eros ultricies, elementum lorem eu, feugiat nulla. Nam in tortor ut nibh faucibus venenatis. Aliquam hendrerit at magna nec consequat.</p>
+                <br/>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <p>Praesent pulvinar gravida pellentesque. Duis aliquet est id velit sagittis ultrices. Donec nec eros eu elit fringilla porttitor. Maecenas egestas dolor nibh, a hendrerit orci hendrerit eget. In accumsan pharetra consequat. Nam erat sapien, bibendum eu dictum vitae, semper sit amet purus. Proin sit amet rhoncus augue. Vivamus luctus molestie semper. Aenean pulvinar nisl neque, ac tincidunt erat luctus vitae. Proin fringilla lobortis eros, at vehicula lorem egestas et. Pellentesque congue ante a nisi consectetur faucibus. Aliquam consectetur in nisi non tempor. Donec nisi felis, imperdiet et molestie ut, dictum eu purus.</p>
+            </BodyTemplate>
+        </VilmaModal>
+
+        <VilmaButton OnClick="@(() => _5thModal.Show())" Content="Vertically centered and scrollable" />
+
+        <VilmaModal @ref="@_15thModal" HeaderText="Modal title" BodyText="Modal body text" FooterText="Modal footer text" CloseOnEscKeyPressed="false" />
+
+        <VilmaButton OnClick="@(() => _15thModal.Show())" Content="ESC key disbled" />
+    </div>
+
+    <div class="hstack gap-4 col-6">
+        <VilmaModal @ref="@_6thModal" BodyText="Body text" HeaderText="Modal title" FooterText="Modal footer text" ModalSize="ModalSizes.Small" />
+
+        <VilmaButton OnClick="@(() => _6thModal.Show())" Content="Small Modal" />
+
+        <VilmaModal @ref="@_7thModal" BodyText="Body text" HeaderText="Modal title" FooterText="Modal footer text" ModalSize="ModalSizes.Large" />
+
+        <VilmaButton OnClick="@(() => _7thModal.Show())" Content="Large Modal" />
+
+        <VilmaModal @ref="@_8thModal" BodyText="Body text" HeaderText="Modal title" FooterText="Modal footer text" ModalSize="ModalSizes.ExtraLarge" />
+
+        <VilmaButton OnClick="@(() => _8thModal.Show())" Content="Extra large Modal" />
+    </div>
+
+    <div class="hstack gap-4">
+        <VilmaModal @ref="@_9thModal" BodyText="Body text" HeaderText="Modal title" FooterText="Modal footer text" FullScreenMode="ModalFullScreenModes.Always" />
+
+        <VilmaButton OnClick="@(() => _9thModal.Show())" Content="Always" />
+
+        <VilmaModal @ref="@_10thModal" BodyText="Body text" HeaderText="Modal title" FooterText="Modal footer text" FullScreenMode="ModalFullScreenModes.Small" />
+
+        <VilmaButton OnClick="@(() => _10thModal.Show())" Content="Small" />
+
+        <VilmaModal @ref="@_11thModal" BodyText="Body text" HeaderText="Modal title" FooterText="Modal footer text" FullScreenMode="ModalFullScreenModes.Medium" />
+
+        <VilmaButton OnClick="@(() => _11thModal.Show())" Content="Medium" />
+
+        <VilmaModal @ref="@_12thModal" BodyText="Body text" HeaderText="Modal title" FooterText="Modal footer text" FullScreenMode="ModalFullScreenModes.Large" />
+
+        <VilmaButton OnClick="@(() => _12thModal.Show())" Content="Large" />
+
+        <VilmaModal @ref="@_13thModal" BodyText="Body text" HeaderText="Modal title" FooterText="Modal footer text" FullScreenMode="ModalFullScreenModes.ExtraLarge" />
+
+        <VilmaButton OnClick="@(() => _13thModal.Show())" Content="Extra large" />
+
+        <VilmaModal @ref="@_14thModal" BodyText="Body text" HeaderText="Modal title" FooterText="Modal footer text" FullScreenMode="ModalFullScreenModes.ExtraExtraLarge" />
+
+        <VilmaButton OnClick="@(() => _14thModal.Show())" Content="Extra extra large" />
+    </div>
+
+    <div class="hstack gap-4 col-6">
+        <VilmaModal @ref="@_16thModal" BodyText="Body text" HeaderText="Modal title">
+            <FooterTemplate>
+                <div class="hstack gap-5">
+                    <VilmaButton OnClick="@(() => _16thModal.Hide())" Content="Hide Modal" />
+                    <VilmaButton OnClick="@(() => _16thModal.Toggle())" Content="Toggle Modal" />
+                </div>
+            </FooterTemplate>
+        </VilmaModal>
+
+        <VilmaButton OnClick="@(() => _16thModal.Show())" Content="Show Modal" />
+
+        <VilmaButton OnClick="@(() => _16thModal.Toggle())" Content="Toggle Modal" />
+    </div>
 </div>
 
 @code {
     private VilmaModal _1stModal;
     private VilmaModal _2ndModal;
     private VilmaModal _3rdModal;
+    private VilmaModal _4thModal;
+    private VilmaModal _5thModal;
+    private VilmaModal _6thModal;
+    private VilmaModal _7thModal;
+    private VilmaModal _8thModal;
+    private VilmaModal _9thModal;
+    private VilmaModal _10thModal;
+    private VilmaModal _11thModal;
+    private VilmaModal _12thModal;
+    private VilmaModal _13thModal;
+    private VilmaModal _14thModal;
+    private VilmaModal _15thModal;
+    private VilmaModal _16thModal;
 }

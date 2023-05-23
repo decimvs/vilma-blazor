@@ -14,9 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución",
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vilma.Blazor.RichTextEditor", "Vilma.Blazor.RichTextEditor\Vilma.Blazor.RichTextEditor.csproj", "{C6E59F6C-CD41-4FF7-98FE-A04B1230EAED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vilma.Blazor.RichTextEditor", "Vilma.Blazor.RichTextEditor\Vilma.Blazor.RichTextEditor.csproj", "{C6E59F6C-CD41-4FF7-98FE-A04B1230EAED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vilma.Blazor.MediaManager", "Vilma.Blazor.MediaManager\Vilma.Blazor.MediaManager.csproj", "{BAF5CF07-EE51-42C8-8D0D-A285635FB8BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vilma.Blazor.MediaManager", "Vilma.Blazor.MediaManager\Vilma.Blazor.MediaManager.csproj", "{BAF5CF07-EE51-42C8-8D0D-A285635FB8BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
