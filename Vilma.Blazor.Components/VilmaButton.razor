@@ -1,0 +1,278 @@
+﻿@inject IJSRuntime _jsRuntime
+@inherits VilmaGroupableComponent
+
+@if (ButtonType == ButtonTypes.Button)
+{
+    <button type="button" class="@_btnClasses" @onclick="HandleOnClickEvent" disabled="@IsDisabled" @ref="@_btnRef" @attributes="@Attributes">
+        <div class="hstack">
+            @if (Icon != null && IconPosition == IconPositions.Start)
+            {
+                <VilmaIcon Icon="Icon.Value" CssClasses="@_iconClasses.ToString()" IconWidth="IconWidth" IconHeight="IconHeight" ColorScheme="IconColorScheme" />
+            }
+            @if (ContentTemplate != null)
+            {
+                @ContentTemplate
+            }
+            else if (Content != null)
+            {
+                @Content
+            }
+            @if (Icon != null && IconPosition == IconPositions.End)
+            {
+                <VilmaIcon Icon="Icon.Value" CssClasses="@_iconClasses.ToString()" IconWidth="IconWidth" IconHeight="IconHeight" ColorScheme="IconColorScheme" />
+            }
+        </div>
+    </button>
+}
+else
+{
+    <input type="@_btnType" class="btn-check" autocomplete="off" @onclick="HandleOnClickEvent" name="@GroupName" disabled="@IsDisabled" @ref="@_btnRef" @attributes="@Attributes" checked="@Checked">
+    <label class="@_btnClasses" for="@ButtonId">
+        @if (Icon != null && IconPosition == IconPositions.Start)
+        {
+            <VilmaIcon Icon="Icon.Value" CssClasses="@_iconClasses.ToString()" IconWidth="IconWidth" IconHeight="IconHeight" ColorScheme="IconColorScheme" />
+        }
+        @if (ContentTemplate != null)
+        {
+            @ContentTemplate
+        }
+        else if (Content != null)
+        {
+            @Content
+        }
+        @if (Icon != null && IconPosition == IconPositions.End)
+        {
+            <VilmaIcon Icon="Icon.Value" CssClasses="@_iconClasses.ToString()" IconWidth="IconWidth" IconHeight="IconHeight" ColorScheme="IconColorScheme" />
+        }
+    </label>
+}
+
+@code {
+    /// <summary>
+    /// Gets or set the button type. Default is: ButtonType.Button.
+    /// </summary>
+    [Parameter] public ButtonTypes ButtonType { get; set; } = ButtonTypes.Button;
+
+    /// <summary>
+    /// Gets or sets the text content of the button. If you want to use HTML or other components
+    /// use ContentTemplate property instead.
+    /// </summary>
+    [Parameter] public string? Content { get; set; }
+
+    /// <summary>
+    /// Gets or sets the content of the button defined by pure HTML or other components.
+    /// </summary>
+    [Parameter] public RenderFragment? ContentTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets this component style.
+    /// </summary>
+    [Parameter] public ColorScheme ColorScheme { get; set; } = ColorScheme.Primary;
+
+    /// <summary>
+    /// Sets additional css classes to this component
+    /// </summary>
+    [Parameter] public string? CssClasses { get; set; }
+
+    /// <summary>
+    /// Event fired when the button is clicked
+    /// </summary>
+    [Parameter] public EventCallback OnClick { get; set; }
+
+    /// <summary>
+    /// Event fired when button is toggled. This event is fired only if
+    /// EnableToggleFunction is active.
+    /// </summary>
+    [Parameter] public EventCallback<bool?> OnButtonToggled { get; set; }
+
+    /// <summary>
+    /// Enables or disables the text wrapping in the button. Default is false: text wrapping enabled.
+    /// Set to true if you want to disable text wrapping.
+    /// </summary>
+    [Parameter] public bool NoWrap { get; set; }
+
+    /// <summary>
+    /// Enables or disables the outline button style. Default is false: button with standar style.
+    /// Set to true if you want to enable outline style.
+    /// </summary>
+    [Parameter] public bool SetOutline { get; set; }
+
+    /// <summary>
+    /// Sets the checkbox or radio button as checked.
+    /// </summary>
+    [Parameter] public bool Checked { get; set; }
+
+    /// <summary>
+    /// Is the value returned when the button is checked
+    /// </summary>
+    [Parameter] public object? CheckedValue { get; set; }
+
+    /// <summary>
+    /// Enables or disables the toggle function.
+    /// </summary>
+    [Parameter] public bool EnableToggleFunction { get; set; }
+
+    /// <summary>
+    /// If EnableToggleFunction = true, set the button to the active state.
+    /// </summary>
+    [Parameter] public bool IsStatusActive { get; set; }
+
+    /// <summary>
+    /// Enables or disables the button. To disable the button set this property to true.
+    /// </summary>
+    [Parameter] public bool IsDisabled { get; set; }
+
+    /// <summary>
+    /// Gets or sets the size of this button. Default is: Size.Normal.
+    /// </summary>
+    [Parameter] public Sizes ButtonSize { get; set; } = Sizes.Normal;
+
+    /// <summary>
+    /// Gets or sets the button icon.
+    /// </summary>
+    [Parameter] public Icons? Icon { get; set; }
+
+    /// <summary>
+    /// Gets or sets the icon position. Default is: IconPositions.Start.
+    /// </summary>
+    [Parameter] public IconPositions IconPosition { get; set; } = IconPositions.Start;
+
+    /// <summary>
+    /// Gets or sets the width of the icon. Default  is: 24px.
+    /// </summary>
+    [Parameter] public int IconWidth { get; set; } = 24;
+
+    /// <summary>
+    /// Gets or sets the height of the icon. Default  is: 24px.
+    /// </summary>
+    [Parameter] public int IconHeight { get; set; } = 24;
+
+    /// <summary>
+    /// Gets or sets the color scheme of the button. Default is: ColorScheme.None.
+    /// </summary>
+    [Parameter] public ColorScheme IconColorScheme { get; set; } = ColorScheme.None;
+
+    /// <summary>
+    /// Gets or sets the Icon css classes.
+    /// </summary>
+    [Parameter] public string? IconCssClasses { get; set; }
+
+    [Parameter] public string ButtonId { get; set; } = Guid.NewGuid().ToString();
+
+
+    private CssClassCollection _btnClasses = new CssClassCollection();
+    private CssClassCollection _iconClasses = new CssClassCollection();
+    private ElementReference _btnRef;
+    private string _btnType = "checkbox";
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _btnClasses.Clear();
+        _btnClasses.Add("btn");
+        _btnClasses.AddClasses(CssClasses);
+        _btnClasses.Add(ButtonSize.GetSizeClass());
+
+        if (SetOutline)
+            _btnClasses.Add(ColorScheme.GetButtonOutlineClass());
+        else
+            _btnClasses.Add(ColorScheme.GetButtonClass());
+
+        if (NoWrap)
+            _btnClasses.Add("text-nowrap");
+
+        TryAddAttribute("id", ButtonId);
+
+        if (EnableToggleFunction && ButtonType == ButtonTypes.Button)
+        {
+            if (IsStatusActive)
+            {
+                _btnClasses.Add("active");
+                TryAddAttribute("aria-pressed", "true");
+            }
+
+            TryAddAttribute("data-bs-toggle", "button");
+        }
+
+        if (ButtonType == ButtonTypes.Radio)
+            _btnType = "radio";
+        else if (ButtonType == ButtonTypes.Checkbox)
+            _btnType = "checkbox";
+
+        _iconClasses.Clear();
+
+        if (IconCssClasses !=  null)
+            _iconClasses.AddClasses(IconCssClasses);
+        else if (IconCssClasses == null && IconPosition == IconPositions.Start)
+            _iconClasses.Add("me-2");
+        else if (IconCssClasses == null && IconPosition == IconPositions.End)
+            _iconClasses.Add("ms-2");
+    }
+
+    private async void HandleOnClickEvent()
+    {
+        await OnClick.InvokeAsync();
+
+        if (EnableToggleFunction)
+        {
+            var status = await GetCurrentStatusAsync();
+            await OnButtonToggled.InvokeAsync(status);
+        }
+    }
+
+    internal override void SetDisabledStatus(bool newStatus)
+    {
+        IsDisabled = newStatus;
+        StateHasChanged();
+    }
+
+    /// <summary>
+    /// Toggles the active state of the button. To take effect the property EnableToggleFunction
+    /// must be activated.
+    /// </summary>
+    public void ToggleActiveState()
+    {
+        if (EnableToggleFunction)
+        {
+            try
+            {
+                _jsRuntime.InvokeVoidAsync("VilmaBlazor.buttonToggleState", _btnRef);
+            }
+            catch { }
+        }
+    }
+
+    /// <summary>
+    /// Gets the current state of the button.
+    /// </summary>
+    /// <returns>true: active, false: inactive, null: toggle function is not active or error thrown.</returns>
+    public async Task<bool?> GetCurrentStatusAsync()
+    {
+        if (EnableToggleFunction)
+        {
+            try
+            {
+                return await _jsRuntime.InvokeAsync<bool>("VilmaBlazor.buttonGetStatus", _btnRef);
+            }
+            catch { }
+        }
+
+        return null;
+    }
+
+    public async Task<bool> IsCheckedAsync()
+    {
+        if (ButtonType != ButtonTypes.Button)
+        {
+            try
+            {
+                var value = await _jsRuntime.InvokeAsync<bool>("VilmaBlazor.buttonIsChecked", _btnRef);
+                return value;
+            }
+            catch { }
+        }
+
+        return false;
+    }
+}

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vilma.Blazor.Test", "Vilma.Blazor.Test\Vilma.Blazor.Test.csproj", "{8C65EFBC-0F88-4676-8747-8F0A2A43322D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vilma.Blazor.Test.BServer", "Vilma.Blazor.Test.BServer\Vilma.Blazor.Test.BServer.csproj", "{8C65EFBC-0F88-4676-8747-8F0A2A43322D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vilma.Blazor", "Vilma.Blazor\Vilma.Blazor.csproj", "{57589DF0-FC56-4532-9964-A81535D1E2D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vilma.Blazor.Components", "Vilma.Blazor.Components\Vilma.Blazor.Components.csproj", "{57589DF0-FC56-4532-9964-A81535D1E2D1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución", "Elementos de la solución", "{746FB6F4-7433-4518-A850-723AFCA076B3}"
 	ProjectSection(SolutionItems) = preProject
@@ -14,9 +14,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución",
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vilma.Blazor.RichTextEditor", "Vilma.Blazor.RichTextEditor\Vilma.Blazor.RichTextEditor.csproj", "{C6E59F6C-CD41-4FF7-98FE-A04B1230EAED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vilma.Blazor.Components.RichTextEditor", "Vilma.Blazor.Components.RichTextEditor\Vilma.Blazor.Components.RichTextEditor.csproj", "{C6E59F6C-CD41-4FF7-98FE-A04B1230EAED}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vilma.Blazor.MediaManager", "Vilma.Blazor.MediaManager\Vilma.Blazor.MediaManager.csproj", "{BAF5CF07-EE51-42C8-8D0D-A285635FB8BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vilma.Blazor.Components.MediaManager", "Vilma.Blazor.Components.MediaManager\Vilma.Blazor.Components.MediaManager.csproj", "{BAF5CF07-EE51-42C8-8D0D-A285635FB8BA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vilma.Blazor.Components.FileUploader.LocalStorage", "Vilma.Blazor.Components.FileUploader.LocalStorage\Vilma.Blazor.Components.FileUploader.LocalStorage.csproj", "{B88B516A-E5A5-4790-8459-498EC3A9FFD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vilma.Blazor.Common", "Vilma.Blazor.Common\Vilma.Blazor.Common.csproj", "{BD44066A-7214-495E-BB6C-159E3D2BC2CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vilma.Blazor.Test.Api", "Vilma.Blazor.Test.Api\Vilma.Blazor.Test.Api.csproj", "{15587DEE-8882-46DF-9735-95018E1F27BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +46,18 @@ Global
 		{BAF5CF07-EE51-42C8-8D0D-A285635FB8BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAF5CF07-EE51-42C8-8D0D-A285635FB8BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAF5CF07-EE51-42C8-8D0D-A285635FB8BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B88B516A-E5A5-4790-8459-498EC3A9FFD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B88B516A-E5A5-4790-8459-498EC3A9FFD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B88B516A-E5A5-4790-8459-498EC3A9FFD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B88B516A-E5A5-4790-8459-498EC3A9FFD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD44066A-7214-495E-BB6C-159E3D2BC2CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD44066A-7214-495E-BB6C-159E3D2BC2CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD44066A-7214-495E-BB6C-159E3D2BC2CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD44066A-7214-495E-BB6C-159E3D2BC2CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15587DEE-8882-46DF-9735-95018E1F27BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15587DEE-8882-46DF-9735-95018E1F27BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15587DEE-8882-46DF-9735-95018E1F27BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15587DEE-8882-46DF-9735-95018E1F27BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

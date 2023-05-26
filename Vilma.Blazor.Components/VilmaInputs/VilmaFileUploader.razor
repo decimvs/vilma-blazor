@@ -1,0 +1,63 @@
+﻿@inherits VilmaFormControl
+@namespace Vilma.Blazor.Components
+@inject IConfiguration _config
+@inject IFileUploader _uploader
+
+<div class="hstack gap-2">
+    <VilmaFileInput Label="@Label" LabelTemplate="@LabelTemplate" LabelCssClasses="@LabelCssClasses"
+                InputCssClasses="@InputCssClasses" InputId="@InputId" Placeholder="@Placeholder"
+                Value="@Value" OnChange="InputValueChanged" />
+    <VilmaButton Content="Upload" OnClick="UploadFiles" />
+</div>
+
+@code {
+    [Parameter] public string? Value { get; set; }
+
+    [Parameter] public string UploaderConfigurationPath { get; set; } = string.Empty;
+
+    [Parameter] public IReadOnlyList<IBrowserFile>? SelectedFiles { get; set; }
+
+    [Parameter] public EventCallback<InputFileChangeEventArgs> FilesSelected { get; set; }
+
+    [Parameter] public EventCallback<FilesValidationResult> OnValidationError { get; set; }
+
+    [Parameter] public EventCallback<FilesValidationResult> OnFilesValidated { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (string.IsNullOrWhiteSpace(UploaderConfigurationPath)) throw new Exception("UploaderConfigurationPath cannot be null");
+
+        _uploader.LoadParameters(UploaderConfigurationPath);
+    }
+
+    private void InputValueChanged(InputFileChangeEventArgs value)
+    {
+        SelectedFiles = value.GetMultipleFiles();
+        FilesSelected.InvokeAsync(value);
+
+        var result = _uploader.CheckFilesOnClient(value.GetMultipleFiles());
+
+        if (result.HasErrors)
+        {
+            OnValidationError.InvokeAsync(result);
+            return;
+        }
+
+        OnFilesValidated.InvokeAsync(result);
+    }
+
+    private void UploadFiles()
+    {
+        if (SelectedFiles == null || SelectedFiles.Count <= 0) throw new Exception("Select at least one file to upload");
+
+        var result = _uploader.CheckFilesOnClient(SelectedFiles);
+
+        if (result.HasErrors)
+        {
+            OnValidationError.InvokeAsync(result);
+            return;
+        }
+
+        _uploader.UploadFiles(SelectedFiles);
+    }
+}

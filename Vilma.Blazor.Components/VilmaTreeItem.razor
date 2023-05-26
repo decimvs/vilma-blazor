@@ -1,0 +1,140 @@
+﻿@inherits VilmaBasicComponent
+
+<div class="d-flex">
+    @if (ChildContent != null)
+    {
+        <div>
+            <VilmaButton ColorScheme="ColorScheme.None" CssClasses="p-0"
+                     Icon="@_currentIcon" IconWidth="16" IconCssClasses="m-0 p-0"
+                     data-bs-toggle="collapse" data-bs-target="@($"#{_panelId}")"
+                     OnClick="ItemNodeClicked"/>
+        </div>
+    }
+    else
+    {
+        <div class="vb-treeitem-icon-placeholder"></div>
+    }
+    <div>
+        <div class="hstack gap-2 vb-treeitem-label @_activeClass" @onclick="ItemLabelClicked">
+            @if (Icon != null)
+            {
+                <VilmaIcon Icon="Icon.Value" IconWidth="20" IconHeight="20" />
+            }
+            <span class="vb-treeitem-label-text">@Text</span>
+        </div>
+        @if (ChildContent != null)
+        {
+            <div class="collapse" id="@_panelId">
+                <CascadingValue Value="this">
+                    @ChildContent
+                </CascadingValue>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    /// <summary>
+    /// Sets the item text
+    /// </summary>
+    [Parameter] public string Text { get; set; }
+
+    /// <summary>
+    /// Sets the Item icon
+    /// </summary>
+    [Parameter] public Icons? Icon { get; set; }
+
+    /// <summary>
+    /// Child items of this item
+    /// </summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// This parameter is used to store your custom data to recover
+    /// later when an click event occours.
+    /// </summary>
+    [Parameter] public object? CustomData { get; set; }
+
+    [CascadingParameter] public object? Parent { get; set; }
+
+    /// <summary>
+    /// Id of the modal
+    /// </summary>
+    private string _panelId = DateTime.Now.Ticks.ToString("x");
+    private Icons _currentIcon = Icons.ChevronRight;
+    private List<VilmaTreeItem> _children = new();
+    private string _activeClass = "";
+
+    protected override void OnParametersSet()
+    {
+        if (Parent != null && Parent is VilmaTreeComponent)
+        {
+            ((VilmaTreeComponent)Parent).AddNewChild(this);
+        }
+        else if (Parent != null && Parent is VilmaTreeItem)
+        {
+            ((VilmaTreeItem)Parent).AddNewChild(this);
+        }
+    }
+
+    private void ItemNodeClicked()
+    {
+        if (_currentIcon == Icons.ChevronRight)
+            _currentIcon = Icons.ChevronDown;
+        else
+            _currentIcon = Icons.ChevronRight;
+    }
+
+    private void ItemLabelClicked(MouseEventArgs e)
+    {
+        NotifyToParentItemClicked(this);
+
+        _activeClass = "active";
+    }
+
+    internal void AddNewChild(VilmaTreeItem child)
+    {
+        if (!_children.Contains(child))
+        {
+            _children.Add(child);
+        }
+    }
+
+    /// <summary>
+    /// Propagates the click event towards all the children,
+    /// to notify them that are unselected.
+    /// </summary>
+    /// <param name="clickedElement"></param>
+    internal void PropagateItemUnselect(VilmaTreeItem clickedElement)
+    {
+        if(clickedElement != this)
+            _activeClass = "";
+
+        foreach (var c in _children)
+        {
+            c.PropagateItemUnselect(clickedElement);
+        }
+    }
+
+    /// <summary>
+    /// Propagates the click event on a child element to
+    /// the current item's parent.
+    /// </summary>
+    /// <param name="clickedElement"></param>
+    internal void ChildItemWasClicked(VilmaTreeItem clickedElement)
+    {
+        NotifyToParentItemClicked(clickedElement);
+    }
+
+    private void NotifyToParentItemClicked(VilmaTreeItem child)
+    {
+        if (Parent != null && Parent is VilmaTreeComponent)
+        {
+            ((VilmaTreeComponent)Parent).ChildItemWasClicked(child);
+        }
+        else if (Parent != null && Parent is VilmaTreeItem)
+        {
+            ((VilmaTreeItem)Parent).ChildItemWasClicked(child);
+        }
+    }
+}

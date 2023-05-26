@@ -1,0 +1,130 @@
+﻿@inherits VilmaBasicComponent
+
+
+<ul class="@_navCss" data-bs-theme="@GetColorMode()">
+    <CascadingValue Value="this">
+        @NavItems
+    </CascadingValue>
+</ul>
+
+@code {
+    /// <summary>
+    /// Gets or sets the tab pages.
+    /// </summary>
+    [Parameter] public RenderFragment? NavItems { get; set; }
+
+    /// <summary>
+    /// Gets or sets additonal css classes for the tab panel control.
+    /// </summary>
+    [Parameter] public string? ControlCss { get; set; }
+
+    /// <summary>
+    /// Sets the nav's items alignement.
+    /// Default: Left.
+    /// </summary>
+    [Parameter] public NavAlignement ItemsAlignement { get; set; } = NavAlignement.Left;
+
+    /// <summary>
+    /// If set true, the nav is rendered vertically, if false the nav is rendered
+    /// horizontally.
+    /// Default: false.
+    /// </summary>
+    [Parameter] public bool RenderVertically { get; set; } = false;
+
+    /// <summary>
+    /// Sets the visual style of the nav's items.
+    /// </summary>
+    [Parameter] public NavStyles Style { get; set; } = NavStyles.Default;
+
+    /// <summary>
+    /// Sets the item's filling style
+    /// </summary>
+    [Parameter] public NavFilling ItemsFilling { get; set; } = NavFilling.Default;
+
+
+
+    /// <summary>
+    /// Sets the active page within the tab pages at the start. 
+    /// Is the 0 based index of the page.
+    /// </summary>
+    [Parameter] public int ActiveTab { get; set; }
+
+    /// <summary>
+    /// This event occurs when one of the tab pages is hidden. The closed tab 
+    /// is returned.
+    /// </summary>
+    [Parameter] public EventCallback<VilmaTabPage> TabPageHidden { get; set; }
+
+    /// <summary>
+    /// This event occurs when one of the tab pages is shown. The opened tab
+    /// is returned.
+    /// </summary>
+    [Parameter] public EventCallback<VilmaTabPage> TabPageShown { get; set; }
+
+    private List<VilmaNavItem> _navItems = new List<VilmaNavItem>();
+    private CssClassCollection _btnCssBase = new CssClassCollection("nav-link");
+    private CssClassCollection _btnCssActive = new CssClassCollection("nav-link active");
+    private CssClassCollection _navCss = new CssClassCollection();
+
+    protected override void OnParametersSet()
+    {
+        _navCss.Clear();
+        _navCss.Add("nav");
+
+        if (Style == NavStyles.Pill)
+            _navCss.Add("nav-pills");
+        else if (Style == NavStyles.Underline)
+            _navCss.Add("nav-underline");
+
+        if (ItemsFilling == NavFilling.Fill)
+            _navCss.Add("nav-fill");
+        else if (ItemsFilling == NavFilling.FillJustify)
+            _navCss.Add("nav-justified");
+
+        if (RenderVertically)
+        {
+            _navCss.Add("flex-column");
+        }
+        else
+        {
+            if (ItemsAlignement == NavAlignement.Right)
+                _navCss.Add("justify-content-end");
+            else if (ItemsAlignement == NavAlignement.Center)
+                _navCss.Add("justify-content-center");
+        }
+
+        _navCss.AddClasses(ControlCss);
+
+        base.OnParametersSet();
+    }
+
+    internal void AddTabPage(VilmaNavItem page)
+    {
+        if (!_navItems.Contains(page))
+            _navItems.Add(page);
+
+        if (_navItems.Count - 1 == ActiveTab)
+            page.SetActive(true);
+
+        StateHasChanged();
+    }
+
+    public void ActivateTab(int index)
+    {
+        if (index >= 0 && index < _navItems.Count)
+        {
+            var tab = _navItems[index];
+            tab.SetActive();
+        }
+    }
+
+    internal void InvokeTabHiddedCallback(VilmaTabPage tab)
+    {
+        TabPageHidden.InvokeAsync(tab);
+    }
+
+    internal void InvokeTabShownCallback(VilmaTabPage tab)
+    {
+        TabPageShown.InvokeAsync(tab);
+    }
+}

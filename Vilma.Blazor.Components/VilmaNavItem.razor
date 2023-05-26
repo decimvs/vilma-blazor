@@ -1,0 +1,94 @@
+﻿@inherits VilmaBasicComponent
+@inject IJSRuntime _jsruntime
+
+<li class="@_itemCss"> 
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</li>
+
+@code {
+    /// <summary>
+    /// Sets the content of the link as a set of HTML markup or other components.
+    /// </summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Sets the additional CSS classes.
+    /// </summary>
+    [Parameter] public string? CssClasses { get; set; }
+
+
+    [CascadingParameter] private VilmaNavControl? Parent { get; set; }
+
+
+    public readonly string TabPageId = DateTime.Now.Ticks.ToString("x");
+    private CssClassCollection _itemCss = new CssClassCollection();
+
+    protected override void OnInitialized()
+    {
+        if (Parent == null)
+            throw new Exception("A VilmaNavControl must be defined within a VilmaTabControl");
+
+        Parent.AddTabPage(this);
+    }
+
+    protected override void OnParametersSet()
+    {
+
+        _itemCss.Add("nav-item");
+        _itemCss.AddClasses(CssClasses);
+    }
+
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                //var dnReference = DotNetObjectReference.Create(this);
+                //_jsruntime.InvokeVoidAsync("VilmaBlazor.setTabPageListeners", dnReference, TabPageId);
+            }
+            catch { }
+        }
+
+        base.OnAfterRender(firstRender);
+    }
+
+    /// <summary>
+    /// Sets this tab page as active and shows its content.
+    /// </summary>
+    public void SetActive()
+    {
+        SetActive(false);
+    }
+
+    //[JSInvokable("OnTabShown")]
+    //public void OnTabShown()
+    //{
+    //    TabShown.InvokeAsync();
+
+    //    //Parent?.InvokeTabShownCallback(this);
+    //}
+
+    //[JSInvokable("OnTabHidden")]
+    //public void OnTabHidden()
+    //{
+    //    TabHidden.InvokeAsync();
+
+    //    //Parent?.InvokeTabHiddedCallback(this);
+    //}
+
+    internal void SetActive(bool firstSet = false)
+    {
+        try
+        {
+            //if (firstSet)
+                //_tabPaneCss.AddClasses("show active");
+
+            //_jsruntime.InvokeVoidAsync("VilmaBlazor.setActiveTab", TabPageId);
+        }
+        catch { }
+    }
+}

@@ -1,0 +1,54 @@
+﻿@inherits VilmaBasicComponent
+
+<nav class="vb-treeitem-container" @attributes="@Attributes">
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</nav>
+
+@code {
+    /// <summary>
+    /// Child items
+    /// </summary>
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; }
+
+    [Parameter] public EventCallback<VilmaTreeItem> ItemClicked { get; set; }
+
+    private List<VilmaTreeItem> _children = new();
+
+    protected override void OnParametersSet()
+    {
+        TryAddAttribute("data-bs-theme", GetColorMode());
+    }
+
+    /// <summary>
+    /// Adds a new child to the list of children
+    /// </summary>
+    /// <param name="child"></param>
+    internal void AddNewChild(VilmaTreeItem child)
+    {
+        if (!_children.Contains(child))
+        {
+            _children.Add(child);
+        }
+    }
+
+    /// <summary>
+    /// Notifies that one child item was clicked.
+    /// Parent start to notify all the children that 
+    /// are unselected except the clicked item.
+    /// Also fires the ItemClicked event for external
+    /// listeners.
+    /// </summary>
+    /// <param name="child">Child item that was clicked</param>
+    internal void ChildItemWasClicked(VilmaTreeItem child)
+    {
+        foreach (var c in _children)
+        {
+            c.PropagateItemUnselect(child);
+        }
+
+        StateHasChanged();
+        ItemClicked.InvokeAsync(child);
+    }
+}

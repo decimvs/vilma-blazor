@@ -1,0 +1,53 @@
+﻿@inherits VilmaBasicComponent
+
+<VilmaNavItem CssClasses="@ItemCssClasses">
+    <a href="#" class="@_dropdownClasses">
+        @if (ContentText != null)
+        {
+            @ContentText
+        }
+        else if (ContentTemplate != null)
+        {
+            @ContentTemplate
+        }
+    </a>
+</VilmaNavItem>
+
+@code {
+    /// <summary>
+    /// Sets the item content text
+    /// </summary>
+    [Parameter] public string? ContentText { get; set; }
+
+    /// <summary>
+    /// Sets this item as active
+    /// </summary>
+    [Parameter] public bool Active { get; set; }
+
+    /// <summary>
+    /// Sets the content of the link as a set of HTML markup or other components.
+    /// </summary>
+    [Parameter] public RenderFragment? ContentTemplate { get; set; }
+
+    /// <summary>
+    /// Sets the additional CSS classes.
+    /// </summary>
+    [Parameter] public string? CssClasses { get; set; }
+
+    /// <summary>
+    /// Sets the css classes for the underlaying item
+    /// </summary>
+    [Parameter] public string? ItemCssClasses { get; set; }
+
+    [CascadingParameter] private VilmaNavItem? Parent { get; set; }
+
+    private CssClassCollection _dropdownClasses = new CssClassCollection();
+
+    protected override void OnParametersSet()
+    {
+        _dropdownClasses.Add("nav-link");
+
+        if (Active)
+            _dropdownClasses.Add("active");
+    }
+}

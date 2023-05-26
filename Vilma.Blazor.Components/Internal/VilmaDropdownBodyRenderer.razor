@@ -1,0 +1,68 @@
+﻿@if (ButtonTemplate != null)
+{
+    <button class="vb-btn-unstyled" role="button" data-bs-toggle="dropdown" data-bs-auto-close="@CloseBehavior.GetAutoCloseValue()"
+            data-bs-offset="@($"{MenuOffset.Item1},{MenuOffset.Item2}")" aria-expanded="false">
+        <span @attributes="@_contentAttrs">@ButtonTemplate</span>
+    </button>
+}
+else
+{
+    <button class="@ButtonCss" type="button" data-bs-toggle="dropdown" data-bs-auto-close="@CloseBehavior.GetAutoCloseValue()"
+            data-bs-offset="@($"{MenuOffset.Item1},{MenuOffset.Item2}")" aria-expanded="false">
+        <span @attributes="@_contentAttrs">@Text</span>
+    </button>
+}
+<ul class="dropdown-menu">
+    @Items
+</ul>
+
+@code {
+    /// <summary>
+    /// Gets or sets the button text.
+    /// </summary>
+    [Parameter] public string? Text { get; set; }
+
+    /// <summary>
+    /// Gets or sets the button template as HTML or Blazor markup.
+    /// </summary>
+    [Parameter] public RenderFragment? ButtonTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets the button Css.
+    /// </summary>
+    [Parameter] public string? ButtonCss { get; set; }
+
+    /// <summary>
+    /// Gets or sets the lists of dropdown items.
+    /// </summary>
+    [Parameter]
+    public RenderFragment Items { get; set; } = @<p>&nbsp;</p>;
+
+    /// <summary>
+    /// Gets or sets the close behavior of the menu.
+    /// </summary>
+    [Parameter] public DropdownAutoClose CloseBehavior { get; set; } = DropdownAutoClose.Default;
+
+    /// <summary>
+    /// Gets or sets the position offset of the menu in relation to the button.
+    /// </summary>
+    [Parameter] public (int x, int y) MenuOffset { get; set; } = (0, 0);
+
+    /// <summary>
+    /// If the component is used in a button group the text in the button should be
+    /// visually hidden.
+    /// </summary>
+    [Parameter] public bool IsContentVisuallyHidden { get; set; } = false;
+
+    private Dictionary<string, object> _contentAttrs = new Dictionary<string, object>();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _contentAttrs.Clear();
+
+        if (IsContentVisuallyHidden)
+            _contentAttrs.Add("class", "visually-hidden");
+    }
+}

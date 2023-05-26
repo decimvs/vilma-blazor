@@ -73,7 +73,7 @@ if not isdir(outputDirectoryPath):
     mkdir(outputDirectoryPath)
 
 with open(join(outputDirectoryPath, "Icons.cs"), 'w') as enumf:
-    enumf.write('namespace Vilma.Blazor\n')
+    enumf.write('namespace Vilma.Blazor.Components\n')
     enumf.write('{\n')
     enumf.write('\n')
     enumf.write('    // This file was generated automatically for the version {bsiversion} of Bootstrap Icons\n'.format(bsiversion = bsiVersion))
@@ -104,7 +104,7 @@ print("Generating SvgIcons.cs file...")
 
 with open(join(outputDirectoryPath, "SvgIcons.cs"), 'w') as extf:
     iconsCtr = 0
-    firstPart = '''namespace Vilma.Blazor.Extensions
+    firstPart = '''namespace Vilma.Blazor.Components.Extensions
 {{
     internal static partial class Icons
     {{

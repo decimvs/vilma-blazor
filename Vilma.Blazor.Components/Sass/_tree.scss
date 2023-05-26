@@ -1,0 +1,30 @@
+﻿.#{$prefix}-treeitem-container {
+    display: inline-block;
+    overflow: auto;
+}
+
+.#{$prefix}-treeitem-label-text {
+    line-height: 1.85;
+    white-space: nowrap;
+}
+
+.#{$prefix}-treeitem-icon-placeholder {
+    width: 17.74px;
+    height: 16px;
+}
+
+.#{$prefix}-treeitem-label {
+    padding: 0 .5rem;
+    border: hidden;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--vb-nav-tree-link-hover);
+    }
+}
+
+.#{$prefix}-treeitem-label.active {
+    background-color: var(--vb-nav-tree-link-active-bg);
+    color: var(--vb-nav-tree-link-active-color);
+}

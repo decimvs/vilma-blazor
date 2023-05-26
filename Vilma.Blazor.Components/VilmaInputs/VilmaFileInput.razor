@@ -1,0 +1,45 @@
+﻿@inherits VilmaFormControl
+@namespace Vilma.Blazor.Components
+@using Microsoft.AspNetCore.Components.Forms
+
+
+<label for="@InputId" class="@_labelCss">
+    @if (LabelTemplate != null)
+    {
+        @LabelTemplate
+    }
+    else
+    {
+        @Label
+    }
+</label>
+<InputFile class="@_inputCss" id="@InputId" OnChange="InputValueChanged"
+           placeholder="@Placeholder" />
+
+
+@code {
+    [Parameter] public string? Value { get; set; }
+
+    [Parameter] public EventCallback<InputFileChangeEventArgs> OnChange { get; set; }
+
+    private CssClassCollection _labelCss = new CssClassCollection();
+    private CssClassCollection _inputCss = new CssClassCollection();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _labelCss.Clear();
+        _labelCss.Add("form-label");
+        _labelCss.AddClasses(LabelCssClasses);
+
+        _inputCss.Clear();
+        _inputCss.Add("form-control");
+        _inputCss.AddClasses(InputCssClasses);
+    }
+
+    private void InputValueChanged(InputFileChangeEventArgs value)
+    {
+        OnChange.InvokeAsync(value);
+    }
+}

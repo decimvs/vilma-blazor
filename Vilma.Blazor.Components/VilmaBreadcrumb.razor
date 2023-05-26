@@ -1,0 +1,107 @@
+﻿@inherits VilmaBasicComponent
+
+<nav @attributes="@Attributes" aria-label="breadcumb" class="@_cssClasses">
+    <CascadingValue Value="this">
+        <ol class="breadcrumb">
+            @Items
+        </ol>
+    </CascadingValue>
+</nav>
+
+@code {
+    /// <summary>
+    /// Gets or sets the items of this breadcumb
+    /// </summary>
+    [Parameter] public RenderFragment? Items { get; set; }
+
+    /// <summary>
+    /// Gets or sets additional CSS classes to the alert.
+    /// </summary>
+    [Parameter] public string? CssClasses { get; set; }
+
+    /// <summary>
+    /// Gets or sets the divider used between items. 
+    /// The divider could be a character like '>'. The default
+    /// character is '/'.
+    /// You can use also an SVG image: it must be a valid
+    /// SVG markup image.
+    /// </summary>
+    [Parameter] public string? Divider { get; set; } = null;
+
+    /// <summary>
+    /// Gets or sets the divider icon.
+    /// </summary>
+    [Parameter] public Icons? DividerIcon { get; set; } = null;
+
+    /// <summary>
+    /// Gets or sets the divider icon width. This value is only
+    /// valid DividerIcon. For custom SVG markup, set the value
+    /// in the svg tag.
+    /// </summary>
+    [Parameter] public int DividerIconWidth { get; set; } = 16;
+
+    /// <summary>
+    /// Gets or sets the divider icon heigth. This value is only
+    /// valid DividerIcon. For custom SVG markup, set the value
+    /// in the svg tag.
+    /// </summary>
+    [Parameter] public int DividerIconHeight { get; set; } = 16;
+
+
+    //private Dictionary<string, object> _attributes = new Dictionary<string, object>();
+    private CssClassCollection _cssClasses = new CssClassCollection();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (DividerIcon != null)
+        {
+            ProcessDividerAsSVG(DividerIcon.Value.GetIconSvg(DividerIconWidth, DividerIconHeight));
+        }
+        else
+        {
+            if (Divider != null)
+            {
+                if (Divider.Trim().StartsWith("<svg"))
+                {
+                    ProcessDividerAsSVG(Divider);
+                }
+                else
+                {
+                    TryAddAttribute("style", $"--bs-breadcumb-divider: {Divider}");
+                }
+            }
+        }
+
+        _cssClasses.Clear();
+        _cssClasses.AddClasses(CssClasses);
+    }
+
+    /// <summary>
+    /// Process the string passed as an SVG markup string to make it
+    /// usable by the Bootstrap css classes.
+    /// </summary>
+    /// <param name="divider"></param>
+    private void ProcessDividerAsSVG(string divider)
+    {
+        divider = divider.Trim();
+
+        if (!divider.Contains("xmlns"))
+        {
+            divider = divider.Replace("<svg", "<svg xmlns=\"http://www.w3.org/2000/svg\"");
+        }
+
+        divider = divider.Replace("<", "%3C");
+        divider = divider.Replace(">", "%3E");
+        divider = divider.Replace("\"", "'");
+        divider = divider.Replace("#", "%23");
+        divider = divider.Replace("&", "%26");
+        divider = divider.Replace("fill='currentColor'", "");
+
+        var encodedSvg = $"url(\"data:image/svg+xml,{divider}\");";
+        var finalSvg = $"--bs-breadcrumb-divider: {encodedSvg}; stroke: #fff;";
+
+        TryAddAttribute("style", finalSvg);   
+    }
+}

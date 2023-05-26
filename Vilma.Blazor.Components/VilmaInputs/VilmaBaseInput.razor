@@ -1,0 +1,68 @@
+﻿@inherits VilmaFormControl
+@namespace Vilma.Blazor.Components
+
+<label for="@InputId" class="@_labelCss">
+    @if (LabelTemplate != null)
+    {
+        @LabelTemplate
+    }
+    else
+    {
+        @Label
+    }
+</label>
+<input type="@InputType.GetInputTypeText()" placeholder="@Placeholder" class="@_inputCss" 
+        id="@InputId" @attributes="@_inputAttrs" 
+        value="@Value" @onchange="InputValueChanged" />
+
+@code {
+    [Parameter] public object? Value { get; set; }
+
+    [Parameter] public EventCallback<object?> ValueChanged { get; set; }
+
+    [Parameter] public InputTypes InputType { get; set; } = InputTypes.Text;
+
+    [Parameter] public int? MaxNumber { get; set; }
+
+    [Parameter] public int? MinNumber { get; set; }
+
+    [Parameter] public int? StepNumber { get; set; }
+
+
+    private CssClassCollection _labelCss = new CssClassCollection();
+    private CssClassCollection _inputCss = new CssClassCollection();
+    private Dictionary<string, object> _inputAttrs = new Dictionary<string, object>();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _labelCss.Clear();
+        _labelCss.Add("form-label");
+        _labelCss.AddClasses(LabelCssClasses);
+
+        _inputCss.Clear();
+        _inputCss.Add(InputType.GetInputTypeClass());
+        _inputCss.AddClasses(InputCssClasses);
+
+        _inputAttrs.Clear();
+
+        if (InputType == InputTypes.Number)
+        {
+            if (MaxNumber != null)
+                _inputAttrs.Add("max", MaxNumber.Value);
+
+            if (MinNumber != null)
+                _inputAttrs.Add("min", MinNumber.Value);
+
+            if (StepNumber != null)
+                _inputAttrs.Add("step", StepNumber.Value);
+        }
+    }
+
+    private void InputValueChanged(ChangeEventArgs args)
+    {
+        Value = args.Value;
+        ValueChanged.InvokeAsync(args.Value);
+    }
+}

@@ -1,0 +1,38 @@
+﻿<div class="col-2">
+    <div class="card" style="max-height: 300px;">
+        <VilmaTreeComponent ItemClicked="OnItemClicked" ColorMode="ColorMode.Dark">
+            <VilmaTreeItem Text="Item 1" Icon="Icons.File">
+                <VilmaTreeItem Text="Item 1-1" />
+                <VilmaTreeItem Text="Item 1-2" />
+                <VilmaTreeItem Text="Item 1-3" />
+                <VilmaTreeItem Text="Item 1-4" />
+                <VilmaTreeItem Text="Item 1-5" CustomData="@("Hola")" />
+            </VilmaTreeItem>
+            <VilmaTreeItem Text="Item 2" />
+            <VilmaTreeItem Text="Item 3" />
+            <VilmaTreeItem Text="Item 4">
+                <VilmaTreeItem Text="Item 4-1">
+                    <VilmaTreeItem Text="Item 4-1-1">
+                        <VilmaTreeItem Text="Item 4-1-1-1" />
+                        <VilmaTreeItem Text="Item 4-1-1-2" />
+                        <VilmaTreeItem Text="Item 4-1-1-3" />
+                        <VilmaTreeItem Text="Item 4-1-1-4" />
+                    </VilmaTreeItem>
+                    <VilmaTreeItem Text="Item 4-1-2" />
+                </VilmaTreeItem>
+                <VilmaTreeItem Text="Item 4-2" />
+                <VilmaTreeItem Text="Item 4-3" />
+                <VilmaTreeItem Text="Item 4-4" />
+                <VilmaTreeItem Text="Item 4-5" />
+            </VilmaTreeItem>
+            <VilmaTreeItem Text="Item 5" />
+        </VilmaTreeComponent>
+    </div>
+</div>
+
+@code {
+    private void OnItemClicked(VilmaTreeItem item)
+    {
+        
+    }
+}

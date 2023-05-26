@@ -1,0 +1,12 @@
+﻿:root,
+[data-bs-theme="light"]  {
+    --#{$prefix}-primary: var(--bs-primary);
+    --#{$prefix}-primary-bg-subtle: var(--bs-primary-bg-subtle);
+
+
+
+    // Tree
+    --#{$prefix}-nav-tree-link-active-color: var(--bs-white);
+    --#{$prefix}-nav-tree-link-active-bg: var(--bs-primary);
+    --#{$prefix}-nav-tree-link-hover: var(--bs-primary-bg-subtle);
+}

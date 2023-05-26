@@ -1,0 +1,57 @@
+﻿@inherits VilmaBasicComponent
+
+<VilmaNavItem CssClasses="@_itemCss.ToString()">
+    <VilmaDropdown Text="@Text" CssClasses="@CssClasses" ButtonTemplate="@ButtonTemplate" ColorScheme="@ColorScheme">
+        <Items>
+            @Items
+        </Items>
+    </VilmaDropdown>
+</VilmaNavItem>
+
+@code {
+    /// <summary>
+    /// Sets the item content text
+    /// </summary>
+    [Parameter] public string? Text { get; set; }
+
+    /// <summary>
+    /// Sets this item as active
+    /// </summary>
+    [Parameter] public bool Active { get; set; }
+
+    /// <summary>
+    /// Sets the content of the link as a set of HTML markup or other components.
+    /// </summary>
+    [Parameter] public RenderFragment? ButtonTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets the lists of dropdown items.
+    /// </summary>
+    [Parameter]
+    public RenderFragment Items { get; set; } = @<p>&nbsp;</p>;
+
+    /// <summary>
+    /// Sets the additional CSS classes.
+    /// </summary>
+    [Parameter] public string? CssClasses { get; set; }
+
+    /// <summary>
+    /// Sets the css classes for the underlaying item
+    /// </summary>
+    [Parameter] public string? ItemCssClasses { get; set; }
+
+    /// <summary>
+    /// Gets or sets the button color scheme.
+    /// </summary>
+    [Parameter] public ColorScheme ColorScheme { get; set; } = ColorScheme.None;
+
+    [CascadingParameter] private VilmaNavItem? Parent { get; set; }
+
+    private CssClassCollection _itemCss = new CssClassCollection();
+
+    protected override void OnParametersSet()
+    {
+        _itemCss.Add("dropdown");
+        _itemCss.AddClasses(ItemCssClasses);
+    }
+}
